@@ -1,0 +1,31 @@
+{
+    "reaction_role": [
+        {
+            "messageId": "1204130917040529509",
+            "emoji": "🎮",
+            "role": "Dark and Darker"
+        },
+        {
+            "messageId": "1204138890680733857",
+            "emoji": "🆓",
+            "role": "darmowe gry"
+        },
+        {
+            "messageId": "1204213919690788904",
+            "emoji": "📺",
+            "role": "LEC mecze"
+        },
+        {
+            "messageId": "1204214400102309910",
+            "emoji": "📺",
+            "role": "MSI mecze"
+        },
+        {
+            "messageId": "1204214626326155345",
+            "emoji": "📺",
+            "role": "WORLDS mecze"
+        }
+    ],
+    "channelName": "role",
+    "adminRole": "Admin"
+}

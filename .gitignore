@@ -1,0 +1,7 @@
+*.rar
+*.tar
+*.zip
+src/config.json
+Logs/*.log
+node_modules/
+package-lock.json

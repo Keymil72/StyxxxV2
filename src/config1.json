@@ -1,0 +1,12 @@
+{
+	"token": "token",
+	"guildId": "guildId (number)",
+	"clientId": "clientId (number)",
+	"channelLogId": "channelLogId (number)",
+	"channelTodoId": "channelTodoId (number)",
+	"noTasksMessage": "Hermes nie odnalazł dla ciebie żadnych zadań. Może czas na odpoczynek? 🌴",
+	"dbHost": "dbHost",
+	"dbUser": "dbUser",
+	"dbPassword": "dbPassword",
+	"developmentMode": false
+}
