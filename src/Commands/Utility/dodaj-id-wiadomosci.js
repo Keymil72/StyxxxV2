@@ -1,3 +1,4 @@
+// dokończyć i przetestować i usunąć json z id wiadomości
 const moment = require("moment");
 
 const { SlashCommandBuilder } = require("discord.js");
