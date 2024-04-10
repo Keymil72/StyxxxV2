@@ -7,8 +7,8 @@ module.exports = {
     name: Events.VoiceStateUpdate,
     once: false,
     execute(oldVoiceState, newVoiceState) {
-        if (oldVoiceState.channel == null && newVoiceState.channel != null) {
-            //Uzytkownik.dodaj(newVoiceState.client, newVoiceState.member);
+        if (oldVoiceState.channel == null && newVoiceState.channel != null && !newVoiceState.member.user.bot) {
+            Uzytkownik.dodaj(newVoiceState.client, newVoiceState.member);
         }
     }
 };

@@ -51,6 +51,10 @@ module.exports = {
                     await chLogs.send(`Wykonano polecenie ↴ ${commandData} na polecenie ↴ ${member.toString()} \nna kanale ↴ ${ch.toString()}`);
                     for (let i = 0; i < time; i++) {
                         if (!interaction.guild?.voiceStates.cache.get(user.id).mute) break;
+                        if(!interaction.user) {
+                            await interaction.editReply({ content: '```Podana osoba się zatopiła!```', ephemeral: true});
+                            break;
+                        }
                         await target.voice.setChannel(ch1);
                         await wait(500);
                         await target.voice.setChannel(ch2);
