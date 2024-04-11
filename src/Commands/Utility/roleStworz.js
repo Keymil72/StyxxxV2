@@ -13,7 +13,7 @@ module.exports = {
         .setName('role-stworz')
         .setDescription(`Ustawia role na serwerze przypiwsując je do reakcji na wiadomości na kanale -  ${channelName}`)
         .addStringOption(option => option
-            .setName('name')
+            .setName('nazwa')
             .setDescription('Nazwa roli')
             .setRequired(true)
         )
@@ -23,7 +23,7 @@ module.exports = {
             .setRequired(true)
         )
         .addStringOption(option => option
-            .setName('description')
+            .setName('opis')
             .setDescription('Opis roli (co robi)')
             .setRequired(true)
         ),
@@ -42,12 +42,12 @@ module.exports = {
         let ch = client.channels.cache.find(ch => ch.name === channelName);
         let chString = ch.isThread() ? `Wątek: ${ch.name}` : ch.toString();
 
-        const name = interaction.options.getString('name');
+        const name = interaction.options.getString('nazwa');
         const emoji = interaction.options.getString('emoji').trim();
-        const description = interaction.options.getString('description');
+        const description = interaction.options.getString('opis');
 
         let currentDate = moment.utc().format('DD.MM.YYYY HH:mm');
-        let footer = "Wygenerowano: Styxxx -> roleSetup • " + currentDate;
+        let footer = "Wygenerowano: Styxxx -> Tworzenie roli     • " + currentDate;
 
         let embed = new EmbedBuilder()
             .setTitle(`${name} - ${description}`)
@@ -60,7 +60,7 @@ module.exports = {
 
         await interaction.deleteReply();
 
-        const filePath = path.join('src', 'events', 'assets', 'role.json');
+        const filePath = path.join('src', 'events', 'assets', 'Role.json');
         fs.readFile(filePath, 'utf8', (err, file) => {
             if (err) {
                 logger.log(client, 'Error while writing the file:' + err + ` przez użytkownika: "${member.user.username} #${member.id}"`, 'botError');

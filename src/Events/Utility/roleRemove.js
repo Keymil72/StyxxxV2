@@ -26,7 +26,7 @@ module.exports = {
         const member = reaction.message.guild.members.cache.get(user.id);
         const client = reaction.message.guild.client;
 
-        const filePath = path.join('src', 'events', 'assets', 'role.json');
+        const filePath = path.join('src', 'events', 'assets', 'Role.json');
         fs.readFile(filePath, 'utf8', (err, file) => {
             if (err) {
                 Logger.log(client, 'Error while writing the file:' + err, 'error');

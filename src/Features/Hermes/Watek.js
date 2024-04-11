@@ -17,6 +17,13 @@ async function stworz(client, user) {
     // dodaje użytkownika do wątku
     await watek.members.add(user.id);
 
+    // dawka początkowych informacji
+    let message = `Cześć👋 to ja Hermes, nie mam zbyt dużo czasu bo się śpieszę 💨, ale masz tu szybką dawkę informacji.
+    \nTen kanał został stworzony tylko dla Ciebie 🍾 i ma na celu wyświetlanie twoich zadań 📨.
+    \nJak mówiłem nie mam więcej czasu, najważniejsze informacje znajdziesz na kanale 🗺️ #bot lub pod komendą 📝 "/zadanie pomoc"  do zobaczenia wkrótce Hermes :soon:`;
+    await wyslijWiadomosci(client, user, message, false);
+
+    // logger i zwrócenie wątku
     Logger.log(client, `Stworzono wątek ${watek.toString()} dla użytkownika ${user.id}`, 'dev Watek.stworz');
     return watek;
 }
