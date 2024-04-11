@@ -77,10 +77,14 @@ async function usun(interaction) {
 
 }
 
+// edytuje zadanie użytkownika
 async function edytuj(interaction) {
+    // odłożenie odpowiedzi na później
     await interaction.deferReply({ ephemeral: true });
-    let user = interaction.user;
-    let zadanie = await parametryZadania(interaction);
+    // zadeklarowanie zmiennych i stałych
+    const user = interaction.user;
+    const zadanie = await parametryZadania(interaction);
+    // tworzenie zapytania do bazy danych
     let query = `UPDATE StyxxxDcBot.Zadania SET`;
     if (zadanie.nazwa != null)
         query += ` nazwa = '${zadanie.nazwa}', `;
@@ -99,21 +103,26 @@ async function edytuj(interaction) {
     if (query.endsWith(', '))
         query = query.slice(0, -2);
 
+    // zakończenie zapytania
     let queryEnd = `WHERE StyxxxDcBot.Zadania.zadanieId = ${zadanie.id} and StyxxxDcBot.Zadania.fk_uzytkownikId = ${user.id};`;
     query += queryEnd;
-
+    // jeśli zapytanie zawiera SETWHERE - nie podano żadnych parametrów do aktualizacji zadania gdyż między set a where nie ma nic
     if (query.includes('SETWHERE')) {
         await interaction.editReply({ content: `Hermes nie wie co ma zmienić, zostawia jak było - nie podano żadnych parametrów do aktualizacji zadania`, ephemeral: true });
         Logger.log(interaction.client, `Hermes nie wie co ma zmienić, zostawia jak było - nie podano żadnych parametrów do aktualizacji zadania ${zadanie.id} przez ${user.id}`, 'dev Zadania.edytuj');
         return;
     }
 
+    // wykonanie zapytania
     DataBase.polacz(query, interaction, async (result, interaction) => {
+        // ilość rezultatów z bazydanych
         const resultLength = Object.keys(result).length;
+        // jeśli zapytanie zwróciło jakieś rezultaty
         if (resultLength > 0) {
             await interaction.editReply({ content: `Hermes odebrał zlecenie edycji zadania o id: ${zadanie.id}`, ephemeral: true });
             Logger.log(interaction.client, `Hermes odebrał zlecenie edycji zadania o id ${zadanie.id} przez ${user.toString()}`, 'dev Zadania.edytuj');
             wyswietl(interaction);
+            // jeśli zapytanie nie zwróciło żadnych rezultatów
         } else {
             await interaction.editReply({ content: `Nie znaleziono zadania o id: ${zadanie.id}`, ephemeral: true });
             Logger.log(interaction.client, `Nie znaleziono zadania ${zadanie.id} do aktualizacji przez ${user.id}`, 'dev Zadania.edytuj');
@@ -131,9 +140,11 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
         await interaction.deferReply({ ephemeral: true });
     // zapytanie do bazy danych
     let query = `select Zadania.zadanieId, Zadania.nazwa, Zadania.kolor, Zadania.termin, Zadania.opis, Zadania.link, Zadania.zdjecie, Zadania.czyAktywne, Uzytkownicy.uzytkownikId, Uzytkownicy.avatarUrl from StyxxxDcBot.Zadania left join StyxxxDcBot.Uzytkownicy on StyxxxDcBot.Uzytkownicy.uzytkownikId = StyxxxDcBot.Zadania.fk_uzytkownikId where StyxxxDcBot.Zadania.fk_uzytkownikId = ${user.id}`;
+    // jeśli czyAktywne nie wynosi 2 (wyświetlanie wszystkich zadań), jeśli 0 - wyświetla nieaktywne, jeśli 1 - wyświetla aktywne
     if (czyAktywne != 2)
         query += ` and StyxxxDcBot.Zadania.czyAktywne = ${czyAktywne}`;
     query += `;`;
+    // wykonanie zapytania
     DataBase.polacz(query, interaction, async (result, interaction) => {
         client = interaction == null ? client : interaction.client;
 
@@ -151,6 +162,7 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
                     // dodaje embeda do tablicy
                     embeds.push(embed);
                 });
+                // usunięcie wiadomości (bota - użytkownika pozostaną na górze) z wątku użytkownika przed wysłaniem nowych
                 Watek.usunWiadomosci(client, user, async () => {
                     Logger.log(client, `Wczytano ${embeds.length} zadań użytkownika ${user.toString()}`, 'dev Zadanie.wyswietl');
                     // wysyła zadania (embedy) do wątku użytkownika
@@ -160,6 +172,7 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
                     });
                 });
             } else {
+                // usunięcie wiadomości (bota - użytkika pozostaną na górze) z wątku użytkownika przed wysłaniem nowych
                 Watek.usunWiadomosci(client, user, async () => {
                     Logger.log(`Brak zadań dla użytkownika ${user.id}`, 'dev Zadanie.wyswietl');
                     // wysyła wiadomość o braku zadań
@@ -174,24 +187,85 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
     });
 }
 
+// wyswietla zadania wszystkich użytkowników - potrzebne do automatycznego odświeżania co dany interwał
+// dokończyć !!!
 async function wyswietlWszystkie(client) {
     Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla wszystkich użytkowników`, 'dev Zadania.wyswietlWszystkie');
 
 }
 
+// wyświetla statystyki zadań użytkownika
+// dokończyć!!!
 async function statystyki(interaction) {
-    let user = interaction.user;
+    // deklaracja stałej user
+    const user = interaction.user;
+    // odłożenie odpowiedzi
     await interaction.deferReply({ ephemeral: true });
-
+    // zapytanie do bazy danych
+    let query = `Select * from StyxxxDcBot.Zadania where StyxxxDcBot.Zadania.fk_uzytkownikId = ${user.id};`;
+    DataBase.polacz(query, interaction, async (result, interaction) => {
+        // deklaracja zmiennych ukończone zadania oraz wszystkie
+        let doneCount = 0;
+        let overAllCount = 0;
+        // pęta do sprawdzenie ilości wykonanych zadań
+        result.row.forEach(row => {
+            // sprawdzenie czy zadanie jest nie aktywne - gdy tak doda się 1 do zakończonych oraz bazowo ilość ogoólna
+            if(row.czyAktywne == 0)
+                doneCount++;
+            overAllCount++;
+        });
+        // odpoweidź na komendę oraz logi
+        await interaction.editReply(`Twoje statystyki to wykonane ${doneCount}/${overAllCount}`);
+        Logger.log(interaction.client, `Wyświetlono statystyki zadań dla użytkownika ${user.id}.`, 'Zadania.statystyki dev');
+    });
 }
-
+// wyświetla pomoc dotyczącą zadań
+// dokończyć!!!
 async function pomoc(interaction) {
+    // odłożenie odpowiedzi
     await interaction.deferReply({ ephemeral: true });
-
+    // stworzenie embeda z informacjami
+    let embed = new EmbedBuilder()
+    .setTitle('Hermes - pomoc')
+    .setColor('#3498DB')
+    .setDescription('Hermes to ciągle zabiegany bot, który pomoże Ci zorganizować Twoje zadania. Poniżej znajdziesz listę komend, które możesz użyć:')
+    .addFields(
+        { name: `/zadanie dodaj`, value: `{nazwa} {kolor} (termin) (opis) (link) (zdjecie) - dodaje zadania o podanych parametrach parametry w klamrach {} są obowązkowe, a w nawiasach () są opcjonalne oraz poprawność parametrów jest sprawdzania, w przypadku błędu np. zdjęcie nie zostanie dodane.` },
+        { name: `/zadanie usun`, value: `{id} - wyłącza zadanie o podanym id (tak jest możliwość ponownego włączenia zadania lub wyświetlenia tylko wyłączonych).`},
+        { name: `/zadanie edytuj`, value: `{id} (nazwa) (kolor) (termin) (opis) (link) (zdjecie) (czy-aktywne) - edytuje zadania o podanym id na wybrane parametry. Parametry w klamrach {} są obowązkowe, a w nawiasach () są opcjonalne oraz poprawność parametrów jest sprawdzania, w przypadku błędu np. zdjęcie nie zostanie zmienione.`},
+        { name: `/zadanie wyswietl`, value: `(opcje) - możliwość wybrania jakie zadania mają zostać wyświetlone (default'owo tylko aktywne).`},
+        { name: `/zadanie statystyki`, value: `Wyświetla statystyki twoich zadań (rozwinięcie funkji - dodanie różnego rodzaji opcji statystyk).`},
+        { name: `/zadanie pomoc`, value: `Hermes dostarcza zbiór dostępnych komend dla polecenia /zadanie - aktualnie wyświetlana opcja.`},
+        { name: `/zadanie wlacz`, value: `{id} - Hermes ponownie zacznie dostarczać zadanie o podanym id`}
+    )
+    .setFooter(`Styxxx Bot -> Funkcja Hermes`);
+    // odpoweidź z embedem pomocy
+    await interaction.editReply({ embeds: embed});
 }
 
+// włączenie zadania o podanym id - ułatwienie by nie używać edycji, którą też można do tego użyć
 async function wlaczZadanie(interaction) {
-
+    // odłożenie odpowiedzi
+    await interaction.deferReply();
+    // zadeklarowanie stałych
+    const user = interaction.user;
+    const taskId = interaction.options.getInteger('id');
+    // stworzenie kwerendy do bazy danych
+    let query = `update StyxxxDcBot.Zadania SET czyAktywne = 1 WHERE StyxxxDcBot.Zadania.zadanieId = ${taskId} and StyxxxDcBot.Zadania.fk_uzytkownikId = ${user.id};`;
+    // wykonanie zapytanai do bazy danych
+    DataBase.polacz(query, interaction, async (result , interaction) => {
+        if (result.length > 0){
+            // odpowiedź z potwierdzeniem poprawności oraz log z wykonaniem polecenia
+            await interaction.editReply(`Zadanie o id zostanie ponownie dostarczanie przez Hermes'a`);
+            Logger.log(interaction.client, `Zadanie o id ${taskId} zostało ponownie włączone na zlecenie ${user.id}`, 'Zadania.wlacz dev')
+            // automatyczne odświeżenie listy zadań po poprawnym wyłączeniu zadania
+            wyswietl(interaction, interaction.client);
+        }else{
+            // informacja o błędzie przy poprawności danych zadania (poprawne id zadania oraz musi być właścicielem zdania)
+            await interaction.editReply(`Hermes nie odnalazł zadania o id ${taskId}, które należy do Ciebie!`);
+            Logger.log(interaction.client, `Hermes nie odnalazł zadania o id ${taskId}, które należałoby do użytkownika ${user.id}`, 'Zadania.wlacz dev');
+        }
+    });
 }
 
 async function parametryZadania(interaction) {
@@ -208,6 +282,7 @@ async function parametryZadania(interaction) {
         interaction.user.id
     );
 
+    // zwraca objekt zadanie
     return zadanie;
 }
 
@@ -225,6 +300,7 @@ async function pobierzZadanie(row) {
         row.czyAktywne,
         row.fk_uzytkownikId
     );
+    // zwraca boekt zadanie otrzymany z rekordu bazy danych
     return zadanie;
 }
 

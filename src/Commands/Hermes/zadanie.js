@@ -156,7 +156,7 @@ module.exports = {
             .setDescription('Wyswietla zadania')
             .addIntegerOption(option => option
                 .setName('opcje')
-                .setDescription('ID zadania wyswietlane przed kropka w nazwie zadania')
+                .setDescription('Wybierz jakie zadanie mam ci dostarczyć z twojej listy')
                 .addChoices(
                     { name: 'Nieaktywne', value: 0 },
                     { name: 'Aktywne', value: 1 },
@@ -167,11 +167,20 @@ module.exports = {
         )
         .addSubcommand(subcommand => subcommand
             .setName('statystyki')
-            .setDescription('Wyswietla statystyki zadan')    
+            .setDescription('Wyswietla statystyki zadań')    
         )
         .addSubcommand(subcommand => subcommand
             .setName('pomoc')
             .setDescription('Wyswietla pomoc dla komendy /zadanie')
+        )
+        .addSubcommand(subcommand => subcommand
+            .setName('wlacz')
+            .setDescription('Włącza zadanie o podanym id')
+            .addIntegerOption(option => option
+                .setName('id')
+                .setDescription('Podaj id wiadomości do włączenia')
+                .setRequired(true)
+            )
         )
     ,
 
@@ -197,6 +206,12 @@ module.exports = {
                 Zadania.statystyki(interaction);
                 break;
             case 'pomoc':
+                Zadania.pomoc(interaction);
+                break;
+            case 'wlacz':
+                Zadania.wlaczZadanie(interaction);
+                break;
+            default:
                 Zadania.pomoc(interaction);
                 break;
         }
