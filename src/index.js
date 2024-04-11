@@ -100,3 +100,4 @@ fs.watch('./src/features/assets/Lobby.json', { interval: 1000 }, (curr, prev) =>
 	lolLobby.updateLobby(client);
 });
 */
+module.exports = { client };
