@@ -1,7 +1,6 @@
 // Opis: Moduł odpowiedzialny za zarządzanie zadaniami użytkownika
 const { EmbedBuilder } = require('discord.js');
 
-const { fs } = require('fs');
 const moment = require('moment');
 
 const Logger = require('../Logger.js');
@@ -183,14 +182,14 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
                 });
             }
         });
-        Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla użytkownika ${user.toString()}`, 'Zadania.wyswietl');
+        Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla użytkownika ${user.toString()}`, 'Zadania.wyswietl dev');
     });
 }
 
 // wyswietla zadania wszystkich użytkowników - potrzebne do automatycznego odświeżania co dany interwał
 // dokończyć !!!
 async function wyswietlWszystkie(client) {
-    Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla wszystkich użytkowników`, 'dev Zadania.wyswietlWszystkie');
+    Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla wszystkich użytkowników`, 'dev Zadania.wyswietlWszystkie', 'Zadania.wyswietlWszystkie dev');
 
 }
 
@@ -200,7 +199,7 @@ async function statystyki(interaction) {
     // deklaracja stałej user
     const user = interaction.user;
     // odłożenie odpowiedzi
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply();
     // zapytanie do bazy danych
     let query = `Select * from StyxxxDcBot.Zadania where StyxxxDcBot.Zadania.fk_uzytkownikId = ${user.id};`;
     DataBase.polacz(query, interaction, async (result, interaction) => {
@@ -208,14 +207,14 @@ async function statystyki(interaction) {
         let doneCount = 0;
         let overAllCount = 0;
         // pęta do sprawdzenie ilości wykonanych zadań
-        result.row.forEach(row => {
+        result.forEach(row => {
             // sprawdzenie czy zadanie jest nie aktywne - gdy tak doda się 1 do zakończonych oraz bazowo ilość ogoólna
             if(row.czyAktywne == 0)
                 doneCount++;
             overAllCount++;
         });
         // odpoweidź na komendę oraz logi
-        await interaction.editReply(`Twoje statystyki to wykonane ${doneCount}/${overAllCount}`);
+        await interaction.editReply(`Twoje statystyki to wykonane ${doneCount}/${overAllCount} zadań`);
         Logger.log(interaction.client, `Wyświetlono statystyki zadań dla użytkownika ${user.id}.`, 'Zadania.statystyki dev');
     });
 }
@@ -225,22 +224,24 @@ async function pomoc(interaction) {
     // odłożenie odpowiedzi
     await interaction.deferReply({ ephemeral: true });
     // stworzenie embeda z informacjami
+    let aktualnyCzas = moment().format('DD-MM-YYYY hh:mm:ss');
     let embed = new EmbedBuilder()
-    .setTitle('Hermes - pomoc')
-    .setColor('#3498DB')
-    .setDescription('Hermes to ciągle zabiegany bot, który pomoże Ci zorganizować Twoje zadania. Poniżej znajdziesz listę komend, które możesz użyć:')
-    .addFields(
-        { name: `/zadanie dodaj`, value: `{nazwa} {kolor} (termin) (opis) (link) (zdjecie) - dodaje zadania o podanych parametrach parametry w klamrach {} są obowązkowe, a w nawiasach () są opcjonalne oraz poprawność parametrów jest sprawdzania, w przypadku błędu np. zdjęcie nie zostanie dodane.` },
-        { name: `/zadanie usun`, value: `{id} - wyłącza zadanie o podanym id (tak jest możliwość ponownego włączenia zadania lub wyświetlenia tylko wyłączonych).`},
-        { name: `/zadanie edytuj`, value: `{id} (nazwa) (kolor) (termin) (opis) (link) (zdjecie) (czy-aktywne) - edytuje zadania o podanym id na wybrane parametry. Parametry w klamrach {} są obowązkowe, a w nawiasach () są opcjonalne oraz poprawność parametrów jest sprawdzania, w przypadku błędu np. zdjęcie nie zostanie zmienione.`},
-        { name: `/zadanie wyswietl`, value: `(opcje) - możliwość wybrania jakie zadania mają zostać wyświetlone (default'owo tylko aktywne).`},
-        { name: `/zadanie statystyki`, value: `Wyświetla statystyki twoich zadań (rozwinięcie funkji - dodanie różnego rodzaji opcji statystyk).`},
-        { name: `/zadanie pomoc`, value: `Hermes dostarcza zbiór dostępnych komend dla polecenia /zadanie - aktualnie wyświetlana opcja.`},
-        { name: `/zadanie wlacz`, value: `{id} - Hermes ponownie zacznie dostarczać zadanie o podanym id`}
-    )
-    .setFooter(`Styxxx Bot -> Funkcja Hermes`);
+        .setTitle('Hermes - pomoc')
+        .setColor('#3498DB')
+        .setThumbnail('https://cdn.discordapp.com/attachments/1186988938167062528/1228032709058891876/image.png?ex=662a9195&is=66181c95&hm=c40de766cf0a4e839c411dba0d0a5fcdfc1544d2352872ad4cbba1fc7f916fc3&')
+        .setDescription('Hermes to ciągle zabiegany bot, który pomoże Ci zorganizować Twoje zadania. Poniżej znajdziesz listę komend, które możesz użyć:')
+        .addFields(
+            { name: `/zadanie dodaj`, value: `{nazwa} {kolor} (termin) (opis) (link) (zdjecie) - dodaje zadania o podanych parametrach parametry w klamrach {} są obowązkowe, a w nawiasach () są opcjonalne oraz poprawność parametrów jest sprawdzania, w przypadku błędu np. zdjęcie nie zostanie dodane.` },
+            { name: `/zadanie usun`, value: `{id} - wyłącza zadanie o podanym id (tak jest możliwość ponownego włączenia zadania lub wyświetlenia tylko wyłączonych).`},
+            { name: `/zadanie edytuj`, value: `{id} (nazwa) (kolor) (termin) (opis) (link) (zdjecie) (czy-aktywne) - edytuje zadania o podanym id na wybrane parametry. Parametry w klamrach {} są obowązkowe, a w nawiasach () są opcjonalne oraz poprawność parametrów jest sprawdzania, w przypadku błędu np. zdjęcie nie zostanie zmienione.`},
+            { name: `/zadanie wyswietl`, value: `(opcje) - możliwość wybrania jakie zadania mają zostać wyświetlone (default'owo tylko aktywne).`},
+            { name: `/zadanie statystyki`, value: `Wyświetla statystyki twoich zadań (rozwinięcie funkji - dodanie różnego rodzaji opcji statystyk).`},
+            { name: `/zadanie pomoc`, value: `Hermes dostarcza zbiór dostępnych komend dla polecenia /zadanie - aktualnie wyświetlana opcja.`},
+            { name: `/zadanie wlacz`, value: `{id} - Hermes ponownie zacznie dostarczać zadanie o podanym id`}
+        )
+        .setFooter({ text: `Wygenerowano: ${aktualnyCzas} -> Hermes`, iconURL: 'https://cdn.discordapp.com/attachments/1186988938167062528/1228031722981953577/questionMark.jpeg?ex=662a90aa&is=66181baa&hm=81d562e56b29834c9bef62bc3acd40002a23310aa38ef3659955fb31e82b6325&' });
     // odpoweidź z embedem pomocy
-    await interaction.editReply({ embeds: embed});
+    await interaction.editReply({ embeds: [embed]});
 }
 
 // włączenie zadania o podanym id - ułatwienie by nie używać edycji, którą też można do tego użyć
@@ -254,7 +255,8 @@ async function wlaczZadanie(interaction) {
     let query = `update StyxxxDcBot.Zadania SET czyAktywne = 1 WHERE StyxxxDcBot.Zadania.zadanieId = ${taskId} and StyxxxDcBot.Zadania.fk_uzytkownikId = ${user.id};`;
     // wykonanie zapytanai do bazy danych
     DataBase.polacz(query, interaction, async (result , interaction) => {
-        if (result.length > 0){
+        console.log(result);
+        if (Object.keys(result).length > 0){
             // odpowiedź z potwierdzeniem poprawności oraz log z wykonaniem polecenia
             await interaction.editReply(`Zadanie o id zostanie ponownie dostarczanie przez Hermes'a`);
             Logger.log(interaction.client, `Zadanie o id ${taskId} zostało ponownie włączone na zlecenie ${user.id}`, 'Zadania.wlacz dev')
