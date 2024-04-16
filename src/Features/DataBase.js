@@ -19,9 +19,9 @@ function polacz(sqlQuery, interactionOrClient, cb){
     }
 
     con.connect(function (err) {
-        if (err) throw err;
+        if (err) cb(err);
         con.query(sqlQuery, function (err, result, fields) {
-            if (err) throw err;
+            if (err) cb(err);
             // po wykonaniu zapytania przekazuje wynik do callbacka
             Logger.log(client, `Wykonano zapytanie: ${sqlQuery}`, 'dev Database');
             cb(result, interactionOrClient);

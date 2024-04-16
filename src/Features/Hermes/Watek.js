@@ -1,6 +1,7 @@
 const { ThreadAutoArchiveDuration } = require('discord.js');
 
 const { channelTodoId, noTasksMessage } = require('../../config.json');
+const { botChannelName } = require('../../channelsConfig.json');
 const Logger = require('../Logger.js');
 const Webhook = require('../Webhook.js');
 const DataBase = require('../DataBase.js');
@@ -17,11 +18,14 @@ async function stworz(client, user) {
     // dodaje użytkownika do wątku
     await watek.members.add(user.id);
 
+    const botChannel = client.channels.cache.find(channel => channel.name === botChannelName);
     // dawka początkowych informacji
     let message = `Cześć👋 to ja Hermes, nie mam zbyt dużo czasu bo się śpieszę 💨, ale masz tu szybką dawkę informacji.
     \nTen kanał został stworzony tylko dla Ciebie 🍾 i ma na celu wyświetlanie twoich zadań 📨.
-    \nJak mówiłem nie mam więcej czasu, najważniejsze informacje znajdziesz na kanale 🗺️ #bot lub pod komendą 📝 "/zadanie pomoc"  do zobaczenia wkrótce Hermes :soon:`;
-    await wyslijWiadomosci(client, user, message, false);
+    \nJak mówiłem nie mam więcej czasu, najważniejsze informacje znajdziesz na kanale 🗺️ ${botChannel.toString()} lub pod komendą 📝 "/zadanie pomoc"  do zobaczenia wkrótce Hermes :soon:`;
+    setTimeout(async () => {
+        await wyslijWiadomosci(client, user, message, false);
+    }, 1000 * 7);
 
     // logger i zwrócenie wątku
     Logger.log(client, `Stworzono wątek ${watek.toString()} dla użytkownika ${user.id}`, 'dev Watek.stworz');
@@ -60,7 +64,7 @@ async function usunWiadomosci(client, user, cb){
                     message.delete();
                 }
             });
-            cb();
+            cb(`Usunięto wszystkie wiadomości z wątku ${thread.toString()} dla użytkownika ${user.id} ilość wiadomości: ${messages.size}`);
         });
     });
 
@@ -79,7 +83,6 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
                 // wysyła wiadomość o braku zadań z callbackiem i loggerem
                 Logger.log(client, `Użytkownik ${user.id} nie ma wątku z zadaniami`, 'dev Watek.wyslijWiadomosci');
                 cb(`Wyjdź z kanału discord i wejdź ponownie na dowolny kanał disscorda "TakiSobieDc", aby twoje dane wpłynęły do Styxxx'u.`);
-                return;
             // w przeciwnym razie użytkownik istnieje i powinien istnieć wątek
             }else {
                 // pobiera webhuka z kanału rodzica do wysyłania wiadomości
@@ -99,15 +102,22 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
                     cb(noTasksMessage);
                     return;
                 }else{
-                    // sprawdzić czy nie ma błędu przy pojedynczym zadaniu jak tak to wrócićdo poprzedniej wersji
-                    // wysyła wiadomości do wątku
-                    msgs.forEach(async msg => {
-                        // wysyła pojedynczą wiadomość do wątku
-                        let sended = await webhook.send({ embeds: [msg], threadId: thread.id});
+                    try{
+                        // sprawdzić czy nie ma błędu przy pojedynczym zadaniu jak tak to wrócićdo poprzedniej wersji
+                        // wysyła wiadomości do wątku
+                        msgs.forEach(async msg => {
+                            // wysyła pojedynczą wiadomość do wątku
+                            let sended = await webhook.send({ embeds: [msg], threadId: thread.id});
+                            await sended.react('✅');
+                            await sended.react('❌');
+                        });
+                    }
+                    catch (error){
+                        let sended = await webhook.send({ content: msgs, threadId: thread.id});
                         await sended.react('✅');
                         await sended.react('❌');
-                    });
-                    if (msgs != noTasksMessage){
+                    }
+                    if (isEmbed){
                         // wysyła wiadomość o dostarczeniu wszystkich zadań
                         await webhook.send({ content: 'Hermes dostarczył zadania @everyone', threadId: thread.id});
                     }

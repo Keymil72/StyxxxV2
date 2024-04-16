@@ -93,7 +93,7 @@ async function dodajZCache(client, interaction) {
 //pobiera użytkowników z bazy danych
 async function pobierzWszystkich(client, interaction, cb) {
     DataBase.polacz(`SELECT * FROM StyxxxDcBot.Uzytkownicy`, interaction, (result, interaction) => {
-        Logger.log(client, `Pobrano użytkowników z bazy danych - ${Object.keys(result).length} objektów`, 'info');
+        Logger.log(client, `Pobrano użytkowników z bazy danych - ${Object.keys(result).length} objektów`, 'dev info');
         //po pobraniu danych z bazy danych, przekazuje je do callbacka
         cb(result, client, interaction);
     });

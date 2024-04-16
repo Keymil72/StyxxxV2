@@ -1,7 +1,8 @@
 {
-    "channelLogId": "826388081057333260",
+    "LogChannelName": "logi",
     "channelLECId": "1200625885892591738",
     "channelMSId": "1204212725195079720",
     "channelWorldsId": "1204212678420201492",
-    "channelDarkAndDarkerId": "1204810081510752277"
+    "channelDarkAndDarkerId": "1204810081510752277",
+    "botChannelName": "bot"
 }

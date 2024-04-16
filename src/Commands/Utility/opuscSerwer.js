@@ -23,7 +23,7 @@ module.exports = {
         let server = client.guilds.cache.find(guild => guild.id === serverId);
         if (server != null){
             await server.leave();
-            await interaction.reply({ content: `STYXXX zawrócił swóje korytko i już nie płynie na ${server.name} na polecenie ${user.toString()}`, ephemeral: true });
+            await interaction.reply({ content: `STYXXX zawrócił swóje koryto i już nie płynie na ${server.name} na polecenie ${user.toString()}`, ephemeral: true });
             Logger.log(client, `STYXXX zawrócił swóje korytko i już nie płynie na ${server.name} na polecenie ${user.toString()}`, 'info');
         }
     },
