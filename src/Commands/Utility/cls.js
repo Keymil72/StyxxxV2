@@ -30,7 +30,7 @@ module.exports = {
         // jeśli kanał jest wątkiem, to zmień wyświetlany kanał na nazwę wątku
         let chString = ch.isThread() ? `Wątek: ${ch.name}` : ch.toString();
         // zmienna z danymi komendy
-        var commandData = "``` " + interaction.commandName + " " + messageAmount + " " + overload + " ```";
+        const commandData = "``` " + interaction.commandName + " " + messageAmount + " " + overload + " ```";
 
         // sprawdzenie czy użytkownik ma uprawnienia do wykonania komendy i wysłanie logów
         if (!member.roles.cache.some(role => role.name === adminRole)) {
@@ -42,11 +42,17 @@ module.exports = {
         // sprawdzenie czy kanał jest kanałem logów lub czy użytkownik podał przeciążenie "-y"
         if (ch.id != channelLogId || overload.includes('-y')) {
             if (ch.isTextBased()) {
+                // licznik usuniętych wiadomości
                 let messagesDeleted = 0;
+                // sprawdzenie czy podano ilość wiadomości do usunięcia, która jest >= 1
                 if (messageAmount != null && messageAmount >= 1) {
+                    // pobranie podanej ilości wiadomości z kanału
                     await ch.messages.fetch({ limit: messageAmount }).then(messages => {
+                        // usuwanie pobranych wiadomości
                         messages.forEach(message => {
+                            // sprawdzenie czy wiadomość da się usunąć
                             if (message.deletable) {
+                                // stworzenie logów wiadomości
                                 let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
                                 Logger.log(interaction.client, `Usunięto wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${chString} przez użytkownika ${member.user.username}`, 'msgContent');
                                 message.delete()
@@ -54,10 +60,15 @@ module.exports = {
                             }
                         });
                     });
+                // sprawdzenie czy użytkownik chce usunąć całą historię wiadomości na kanale
                 } else if (messageAmount == 0) {
+                    // pobranie wszystkich wiadomości z kanału
                     await ch.messages.fetch().then(messages => {
+                        // usuwanie wszystkich wiadomości
                         messages.forEach(message => {
+                            // sprawdzenie czy da się usunąć wiadomość
                             if (message.deletable) {
+                                // stworzenie logów wiadomości
                                 let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
                                 Logger.log(interaction.client, `Usunięto wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${chString} przez użytkownika ${member.user.username}`, 'msgContent');
                                 message.delete()
@@ -66,24 +77,27 @@ module.exports = {
                         });
                     });
                 }
+                // sprawdzenie czy przeciążenie zawiera "-h" - hidden i stworzenie odpowiednich logów
                 if (overload.includes("-h"))
-                    Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał komendę ${commandData} na kanale ${chString}`, 'hiddencritical');
+                    Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał komendę ${commandData} na kanale ${chString}`, 'cls hiddencritical');
+                // w przeciwnym razie informacja zostanie wyświetlona na kanale logów
                 else
-                    Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał komendę ${commandData} na kanale ${chString}`, 'critical');
-                
+                    Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał komendę ${commandData} na kanale ${chString}`, 'cls critical');
+                // stworzenie logów o ilości usuniętych wiadomościach
                 Logger.log(client, `Usunięto ${messagesDeleted} wiadomości z kanału ${ch.toString()} przez ${member.toString()}`, 'info');
             } else {
+                // odpowiedź na błędną ilość wiadomości do usunięcia
                 await interaction.reply({ content: 'Nie podano liczby wiadomości do usunięcia', ephemeral: true });
                 Logger.log(interaction.client, `Użytkownik ${member.user.username} próbował wykonać komendę ${interaction.commandName} na kanale ${chString} - brak liczby wiadomości`, 'error');
                 return;
             }
         } else {
+            // odpowiedź na brak odpowiedniego argumentu przeciążenia dla kanału logów
             await interaction.reply({ content: 'Nie można usunąć wiadomości na tym kanale', ephemeral: true });
             Logger.log(interaction.client, `Użytkownik ${member.user.username} próbował wykonać komendę ${interaction.commandName} na kanale ${chString} - nie można usunąć wiadomości z tego kanału`, 'error');
             return;
         }
+        // odpowiedz na wykonanie komendy
         await interaction.reply({ content: 'Ja tu tylko sprzątam... 🧹', ephemeral: true });
-
-        var commandData = "``` " + interaction.commandName + " " + messageAmount + " ```";
     },
 };

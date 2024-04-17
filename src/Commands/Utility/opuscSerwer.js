@@ -17,11 +17,14 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     async execute(interaction) {
-        let client = interaction.client;
-        let user = interaction.user;
-        let serverId = interaction.options.getString('serwer-id');
-        let server = client.guilds.cache.find(guild => guild.id === serverId);
-        if (server != null){
+        // deklaracja stałych
+        const client = interaction.client;
+        const user = interaction.user;
+        const serverId = interaction.options.getString('serwer-id');
+        const server = client.guilds.cache.find(guild => guild.id === serverId);
+        // sprawdzenie czy bot widzi serwer
+        if (server){
+            // opuszczenie serwera, odpowiedź o opuszczeniu serwera i stworzenie logów
             await server.leave();
             await interaction.reply({ content: `STYXXX zawrócił swóje koryto i już nie płynie na ${server.name} na polecenie ${user.toString()}`, ephemeral: true });
             Logger.log(client, `STYXXX zawrócił swóje korytko i już nie płynie na ${server.name} na polecenie ${user.toString()}`, 'info');

@@ -14,18 +14,17 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
 	async execute(interaction) {
-        let member = interaction.member;
-        const chLogs = interaction.client.channels.cache.get('826388081057333260');
+        // deklaracja stałych
+        const member = interaction.member;
         const ch = interaction.channel;
         const args = interaction.options.getString('text');
 
-        if (ch.isTextBased() ) {
-            await ch.send(args);
-            await interaction.reply({ content: 'Wysłano wiadomość', ephemeral: true});
-        }
+        // wysłanie podanej wiadomości jako bot
+        await ch.send(args);
+        await interaction.reply({ content: 'Wysłano wiadomość', ephemeral: true});
 
+        // stworzenie logów
         var commandData = "``` " + interaction.commandName + " tekst: " + args + " ```";
-
-        Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${ch.toString()}`);
+        Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${ch.toString()}`, 'wyslij hidden');
 	},
 };

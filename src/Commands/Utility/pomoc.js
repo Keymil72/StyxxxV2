@@ -12,15 +12,19 @@ module.exports = {
         .setDescription('Wyświetla dostępne komendy'),
 
     async execute(interaction) {
-        let member = interaction.member;
+        // deklaracja stałych
+        const member = interaction.member;
         const ch = interaction.channel;
-        let chString = ch.isThread() ? `Wątek: ${ch.name}` : ch.toString();
-
+        const chString = ch.isThread() ? `Wątek: ${ch.name}` : ch.toString();
+        // odłożenie odpowiedzi
         await interaction.deferReply({ ephemeral: false });
-        let currentDate = moment.utc().format('DD.MM.YYYY HH:mm');
-        let footer = "Wygenerowano: Styxxx -> pomoc • " + currentDate;
-        let apollofooter = "Wygenerowano: Styxxx -> pomoc • " + currentDate + " • Apollo";
 
+        // deklaracja stałych footerów
+        const currentDate = moment.utc().format('DD.MM.YYYY HH:mm');
+        const footer = "Wygenerowano: Styxxx -> pomoc • " + currentDate;
+        const apollofooter = "Wygenerowano: Styxxx -> pomoc • " + currentDate + " • Apollo";
+
+        // deklaracja embed'a Apollo
         let embedApollo = new EmbedBuilder()
             .setTitle('Dostępne komendy dla Apollo')
             .setDescription('Komendy dostępne tylko dla Apollo (funkcja Styxxx)')
@@ -39,7 +43,7 @@ module.exports = {
             )
             .setFooter({ text: apollofooter });
 
-
+        // deklaracja embed'a Styxxx
         let embed = new EmbedBuilder()
             .setTitle('Dostępne komendy bota Styxxx')
             .setDescription('Istnieja kanały tematyczne do automatycznych informacji takich jak: free-epic, lol-esports, dark-and-darker - do nich nie należy posiadać odpowiednie rangi.')
@@ -61,14 +65,13 @@ module.exports = {
                 { name: '/wstawaj <oznaczona osoba> <ilość powtórzeń>', value: 'Rzuca podaną osobę po kanałach (ilość powtórzeń < 1 wtedy rzuca w "nieskończoność")' }
             )
             .setFooter({ text: footer });
-        if (ch.isTextBased()) {
-            await ch.send({ embeds: [embed] });
-            await ch.send({ embeds: [embedApollo] });
-            interaction.deleteReply();
-        }
+        // wysłanie embedów i usunięcie odpowiedzi
+        await ch.send({ embeds: [embed] });
+        await ch.send({ embeds: [embedApollo] });
+        interaction.deleteReply();
 
-        var commandData = "``` " + interaction.commandName + " ```";
-
+        // stworzenie logów
+        const commandData = "``` " + interaction.commandName + " ```";
         Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${chString}`);
     },
 };

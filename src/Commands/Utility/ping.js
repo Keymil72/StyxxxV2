@@ -8,11 +8,11 @@ const Logger = require('../../Features/Logger.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ping')
-        .setDescription('Wyświetla dostępne komendy'),
+        .setDescription('Wyświetla aktualny opóźnienie bota'),
 
     async execute(interaction) {
-        const client = interaction.client;
-        await interaction.reply({ content: `STYXXX dopłynął z opóźnieniem ${Date.now() - interaction.createdTimestamp}ms.`, ephemeral: true });
+        // wyświetlenie aktualnego pingu bota
+        await interaction.reply({ content: `STYXXX dopłynął z opóźnieniem ${Math.abs(Date.now() - interaction.createdTimestamp)}ms.`, ephemeral: true });
 
     },
 };
