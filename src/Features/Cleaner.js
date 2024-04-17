@@ -10,12 +10,13 @@ async function cleanReply(interaction) {
 }
 
 async function cleanMessage(message) {
-    if (message != null && message.deletable){
+    if (message != null) {
         setTimeout(async () => {
             setTimeout(async () => {
                 try {
                     let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
-                    Logger.log(message.client, `Usuwam wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${chString}`, 'dev Cleaner.cleanMessage');
+                    let ApolloEmbed = message?.embeds?.length ? message.embeds[0]?.author?.name : null;
+                    Logger.log(message.client, `Usuwam wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" z Apollo embed "${ApolloEmbed}" na kanale ${message.channel}`, 'msgContent Cleaner.cleanMessage');
                     await message.delete();
                 }catch (error){
                     Logger.log(message.client, `Błąd podczas usuwania wiadomości na kanale ${message.channel} - ${error}`, 'dev error Cleaner.cleanMessage');
@@ -26,7 +27,7 @@ async function cleanMessage(message) {
             }catch (error){
                 Logger.log(message.client, `Błąd podczas edycji wiadomości na kanale ${message.channel} - ${error}`, 'dev error Cleaner.cleanMessage');
             }
-        }, 15000);
+        }, 1500);
     }
 }
 
