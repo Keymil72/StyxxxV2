@@ -9,5 +9,6 @@
 	"dbHost": "dbHost",
 	"dbUser": "dbUser",
 	"dbPassword": "dbPassword",
+	"adminId": "admin Id (number)",
 	"developmentMode": false
 }

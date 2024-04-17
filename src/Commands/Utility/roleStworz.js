@@ -26,7 +26,8 @@ module.exports = {
             .setName('opis')
             .setDescription('Opis roli (co robi)')
             .setRequired(true)
-        ),
+        )
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     async execute(interaction) {
         // odłożenie odpowiedzi

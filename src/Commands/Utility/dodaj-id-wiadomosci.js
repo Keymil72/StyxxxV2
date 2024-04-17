@@ -1,7 +1,7 @@
 // dokończyć i przetestować i usunąć json z id wiadomości
 const moment = require("moment");
 
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const msgWLIds = require("../../Features/msgWLIds.js");
 
 const Logger = require('../../Features/Logger.js');

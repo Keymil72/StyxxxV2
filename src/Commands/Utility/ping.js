@@ -1,6 +1,6 @@
 const moment = require("moment");
 
-const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
+const { SlashCommandBuilder } = require("discord.js");
 const { channelLogId } = require("../../config.json");
 
 const Logger = require('../../Features/Logger.js');
