@@ -24,7 +24,9 @@ async function stworz(client, user) {
     \nTen kanał został stworzony tylko dla Ciebie 🍾 i ma na celu wyświetlanie twoich zadań 📨.
     \nJak mówiłem nie mam więcej czasu, najważniejsze informacje znajdziesz na kanale 🗺️ ${botChannel.toString()} lub pod komendą 📝 "/zadanie pomoc"  do zobaczenia wkrótce Hermes :soon:`;
     setTimeout(async () => {
-        await wyslijWiadomosci(client, user, message, false);
+        await wyslijWiadomosci(client, user, message, false, (msg) => {
+            Logger.log(client, `Wysłano wiadomość powitalną do wątku ${watek.toString()} dla użytkownika ${user.id}`, 'dev Watek.stworz');
+        });
     }, 1000 * 7);
 
     // logger i zwrócenie wątku
