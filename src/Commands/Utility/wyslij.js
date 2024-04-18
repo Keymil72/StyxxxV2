@@ -24,7 +24,7 @@ module.exports = {
         await interaction.reply({ content: 'Wysłano wiadomość', ephemeral: true});
 
         // stworzenie logów
-        var commandData = "``` " + interaction.commandName + " tekst: " + args + " ```";
+        const commandData = "``` " + interaction.commandName + " tekst: " + args + " ```";
         Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${ch.toString()}`, 'wyslij hidden');
 	},
 };
