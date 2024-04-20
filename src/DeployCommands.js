@@ -19,7 +19,7 @@ for (const folder of commandFolders) {
 		if ('data' in command && 'execute' in command) {
 			commands.push(command.data.toJSON());
 		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+			console.log(`[WARNING] Komenda ${filePath} nie zawiera własności "data" lub "execute".`);
 		}
 	}
 }
@@ -30,18 +30,18 @@ const rest = new REST().setToken(token);
 
 // usuwa wszystkie komendy z serwera
 rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: [] })
-	.then(() => console.log('Successfully deleted all guild commands.'))
+	.then(() => console.log('Usunięto wszystkie komendy aplikacji.'))
 	.catch(console.error);
 
 // usuwa wszystkie komendy z aplikacji (globalne)
 rest.put(Routes.applicationCommands(clientId), { body: [] })
-	.then(() => console.log('Successfully deleted all application commands.'))
+	.then(() => console.log('Usunięto wszystkie komendy aplikacji.'))
 	.catch(console.error);
 
 // tworzy nowe komendy na serwerze
 (async () => {
 	try {
-		console.log(`Started refreshing ${commands.length} application (/) commands.`);
+		console.log(`Wczytywanie ${commands.length} komend aplikacji (/) komendy.`);
 
 		// metoda put jest używana do pełnego odświeżenia wszystkich komend na serwerze z obecnym zestawem
 		const data = await rest.put(
@@ -49,7 +49,7 @@ rest.put(Routes.applicationCommands(clientId), { body: [] })
 			{ body: commands },
 		);
 
-		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+		console.log(`Wczytano ${data.length} komend aplikacji (/) komendy.`);
 	} catch (error) {
 		// złapanie i zalogowanie błędów
 		console.error(error);

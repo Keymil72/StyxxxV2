@@ -3,7 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const { region } = require('./assets/Lobby.json');
 
-// do przerobienia
+// funkcja aktualizująca lobby po otrzymaniu nowych danych - stara funkcja bo riot klient sam ma błąd i nie trzeba sprawdzać paketów
+// Może się przyda jak naprawią swoje błędy w kliencie
 function updateLobby(client) {
     const channel = client.channels.cache.get('1213886211119259738');
     let filePath = path.join('src', 'features', 'assets', 'Lobby.json');

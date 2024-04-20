@@ -32,7 +32,7 @@ for (const folder of commandFolders) {
 		if ('data' in command && 'execute' in command) {
 			client.commands.set(command.data.name, command);
 		} else {
-			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+			console.log(`[WARNING] Komenda ${filePath} nie zawiera własności "data" lub "execute".`);
 		}
 	}
 }
@@ -67,7 +67,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
 	// jeśli nie ma komendy to wyświetla błąd
 	if (!command) {
-		console.error(`No command matching ${interaction.commandName} was found.`);
+		console.error(`Nie obsługiwana komenda "${interaction.commandName}".`);
 		return;
 	}
 
@@ -78,9 +78,9 @@ client.on(Events.InteractionCreate, async interaction => {
 		console.error(error);
 		// jeśli odpowiedź lub odpowiedź z opóźnieniem została już wysłana to wysyła odpowiedź z błędem jako odpowiedź z opóźnieniem
 		if (interaction.replied || interaction.deferred) {
-			await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.followUp({ content: 'Podczas wykonywania polecenia wystąpił nie oczekiwany błąd!', ephemeral: true });
 		} else {
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+			await interaction.reply({ content: 'Podczas wykonywania polecenia wystąpił nie oczekiwany błąd!', ephemeral: true });
 		}
 	}
 });

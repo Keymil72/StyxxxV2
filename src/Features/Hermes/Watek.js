@@ -84,6 +84,7 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
             if (!result.length){
                 // wysyła wiadomość o braku zadań z callbackiem i loggerem
                 Logger.log(client, `Użytkownik ${user.id} nie ma wątku z zadaniami`, 'dev Watek.wyslijWiadomosci');
+                // wysyła wiadomość o braku wątku z zadaniami
                 cb(`Wyjdź z kanału discord i wejdź ponownie na dowolny kanał disscorda "TakiSobieDc", aby twoje dane wpłynęły do Styxxx'u.`);
             // w przeciwnym razie użytkownik istnieje i powinien istnieć wątek
             }else {
@@ -92,6 +93,7 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
                 // 
                 if (webhook == null){
                     Logger.log(client, `Nie znaleziono webhuka w kanale ${parentChannel.toString()}`, 'error Watek.wyslijWiadomosci');
+                    // wysyła wiadomość o braku webhuka w kanale z callbackiem
                     cb(`Brak webhuka w kanale ${parentChannel.toString()} skontaktuj się z administratorem aplikacji!!!`);
                     return;
                 }
@@ -101,6 +103,7 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
                     // wysyła wiadomość o braku zadań
                     await webhook.send({ content: noTasksMessage, threadId: thread.id});
                     Logger.log(client, `Wysłano wiadomość o braku zadań do wątku ${thread.toString()} dla użytkownika ${user.id}`, 'dev Watek.wyslijWiadomosci');
+                    // wysyła wiadomość o braku zadań z callbackiem
                     cb(noTasksMessage);
                     return;
                 }else{
@@ -125,6 +128,7 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
                     }
                     // sprawdzić czy nie ma błędu z msgs - wyświetla undefined / object Object
                     Logger.log(client, `Dostarczono zadania (${Object.keys(msgs).length}) dla ${user.id}`, 'dev Watek.wyslijWiadomosci');
+                    // wysyła wiadomość o dostarczeniu zadań z callbackiem
                     cb(`Hermes dostarczył Ci nowe zadania na ${thread.toString()}`);
                     return;
                 }
