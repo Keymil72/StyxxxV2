@@ -43,7 +43,7 @@ module.exports = {
         // sprawdzenie czy osoba jest na kanale głosowym
         if (baseChannel) {
             // sprawdzenie czy osoba jest na czarnej liście i odpowiedź
-            if (user.id == "s") {
+            if (user.id == adminId) {
                 await interaction.reply({ content: 'Osoba znajdue się na black liście', ephemeral: true });
                 return;
             }

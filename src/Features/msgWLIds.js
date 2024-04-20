@@ -1,5 +1,4 @@
 // Opis: Moduł eksportuje funkcje dodawania id wiadomości do listy wykluczeń z cleanera.
-// dokończyć!!! 
 const Logger = require('./Logger.js');
 const DataBase = require('./DataBase.js');
 
@@ -7,7 +6,7 @@ const DataBase = require('./DataBase.js');
 function dodaj(message){
     let selectQuery = `select * from StyxxxDcBot.CleanerMsgsWl where msgId = '${message.id}';`;
     DataBase.polacz(selectQuery, null, (result, interaction) =>{
-        if (result){
+        if (!result){
             let insertQueru = `insert into StyxxxDcBot.CleanerMsgsWl values ('${message.channel}', '${message.id}', '${message.author}', DATE_ADD(now(),interval 2 hour));`;
             DataBase.polacz(insertQueru, null, (result, interaction) =>{
                 if (result){
