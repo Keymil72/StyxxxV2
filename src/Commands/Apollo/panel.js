@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const msgWLIds = require('../../Features/msgWLIds.js');
+const ms = require('ms');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -93,8 +94,7 @@ module.exports = {
         const row3 = new ActionRowBuilder().addComponents(lyrics, shuffle, stop)
 
 
-        let msg = await Channel.send({ embeds: [embed], components: [row1, row2, row3] })
-        await Channel.send({ content: `${msgWLIds.dodaj(msg.id)}`})
-
+        let msg = await Channel.send({ embeds: [embed], components: [row1, row2, row3] });
+        msgWLIds.dodaj(msg)
     },
 }
