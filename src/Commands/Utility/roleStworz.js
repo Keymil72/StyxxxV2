@@ -13,7 +13,7 @@ module.exports = {
         .setName('role-stworz')
         .setDescription(`Ustawia role na serwerze przypiwsując je do reakcji na wiadomości na kanale -  ${channelName}`)
         .addStringOption(option => option
-            .setName('nazwa')
+            .setName('name')
             .setDescription('Nazwa roli')
             .setRequired(true)
         )
@@ -23,7 +23,7 @@ module.exports = {
             .setRequired(true)
         )
         .addStringOption(option => option
-            .setName('opis')
+            .setName('description')
             .setDescription('Opis roli (co robi)')
             .setRequired(true)
         )
@@ -47,9 +47,9 @@ module.exports = {
         }
 
         // pobranie wartości z opcji
-        const name = interaction.options.getString('nazwa');
+        const name = interaction.options.getString('name');
         const emoji = interaction.options.getString('emoji').trim();
-        const description = interaction.options.getString('opis');
+        const description = interaction.options.getString('description');
 
         // deklaracja stałych footer'a
         let currentDate = moment.utc().format('DD.MM.YYYY HH:mm');

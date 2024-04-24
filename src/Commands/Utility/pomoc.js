@@ -44,7 +44,7 @@ module.exports = {
             .setFooter({ text: apollofooter });
 
         // deklaracja embed'a Styxxx
-        let embed = new EmbedBuilder()
+        let embedStyxxx = new EmbedBuilder()
             .setTitle('Dostępne komendy bota Styxxx')
             .setDescription('Istnieja kanały tematyczne do automatycznych informacji takich jak: free-epic, lol-esports, dark-and-darker - do nich nie należy posiadać odpowiednie rangi.')
             .setColor('#992D22')
@@ -66,7 +66,7 @@ module.exports = {
             )
             .setFooter({ text: footer });
         // wysłanie embedów i usunięcie odpowiedzi
-        await ch.send({ embeds: [embed] });
+        await ch.send({ embeds: [embedStyxxx] });
         await ch.send({ embeds: [embedApollo] });
         interaction.deleteReply();
 

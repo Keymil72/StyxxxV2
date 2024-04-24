@@ -10,8 +10,8 @@ module.exports = {
         .setName('opusc')
         .setDescription('Wyświetla dostępne komendy')
         .addStringOption(option => option
-            .setName('serwer-id')
-            .setDescription('Nazwa serwera')
+            .setName('server-id')
+            .setDescription('Id serwera')
             .setRequired(true)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
@@ -20,7 +20,7 @@ module.exports = {
         // deklaracja stałych
         const client = interaction.client;
         const user = interaction.user;
-        const serverId = interaction.options.getString('serwer-id');
+        const serverId = interaction.options.getString('server-id');
         const server = client.guilds.cache.find(guild => guild.id === serverId);
         // sprawdzenie czy bot widzi serwer
         if (server){

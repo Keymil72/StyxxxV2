@@ -11,8 +11,11 @@ module.exports = {
         .setDescription('Wyświetla aktualny opóźnienie bota'),
 
     async execute(interaction) {
+        // deklaracja stałych
+        const client = interaction.client;
+        const ms = Math.abs(Date.now() - interaction.createdTimestamp);
         // wyświetlenie aktualnego pingu bota
-        await interaction.reply({ content: `STYXXX dopłynął z opóźnieniem ${Math.abs(Date.now() - interaction.createdTimestamp)}ms.`, ephemeral: true });
-
+        await interaction.reply({ content: `STYXXX dopłynął z opóźnieniem ${ms}ms.`, ephemeral: true });
+        Logger.log(client, `Sprawdzono opóźnienie Styxxx'u - ${ms}ms`, 'dev info ping');
     },
 };
