@@ -60,7 +60,7 @@ async function usunWiadomosci(client, user, cb){
         await thread.messages.fetch().then(async messages => {
             const webhook = await Webhook.pobierz(parentChannel);
             messages.forEach(message => {
-                if (message.author.id == webhook.id) {
+                if (message?.author?.id == webhook.id) {
                     let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
                     Logger.log(client, `Usunięto wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${thread.toString()} przez użytkownika ${user.username}`, 'msgContent Watek.usunWiadomosci');
                     message.delete();
