@@ -5,6 +5,7 @@ const DataBase = require('../../Features/DataBase.js');
 const Cleaner = require('../../Features/Cleaner.js');
 const { adminId } = require('../../config.json');
 
+// dodać subcommand do select instert delete update itp. dla ułatwienia !!!
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('db')
