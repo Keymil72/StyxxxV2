@@ -9,8 +9,10 @@ module.exports = {
 	once: true,
 	execute(client) {
 		if (!developmentMode)
+		//NOTE - Logger
 			Logger.log(client, `${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`, 'info');
 		else
+		//NOTE - Logger
 			Logger.log(client, `${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`, 'devinfo');
 		
 		if (!developmentMode)

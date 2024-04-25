@@ -48,6 +48,7 @@ function display(client) {
             saveData(titles);
         }
     }).catch(err => {
+        //FIXME - Na Loggera
         console.log("Api Error: " + err);
     });
 }

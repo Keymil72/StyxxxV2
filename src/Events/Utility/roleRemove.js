@@ -2,7 +2,6 @@ const { Events } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');
 
-const { token, developmentMode } = require('../../config.json');
 const Logger = require('../../Features/Logger.js');
 
 const { channelName } = require('../Assets/Role.json');
@@ -29,6 +28,7 @@ module.exports = {
         const filePath = path.join('src', 'events', 'assets', 'Role.json');
         fs.readFile(filePath, 'utf8', (err, file) => {
             if (err) {
+                //NOTE - Logger
                 Logger.log(client, 'Error while writing the file:' + err, 'error');
                 console.error('Error while reading the file:', err);
                 return
@@ -39,12 +39,14 @@ module.exports = {
                     if (message.id === element.messageId && reaction.emoji.name === element.emoji) {
                         const role = reaction.message.guild.roles.cache.find(role => role.name === element.role);
                         await member.roles.remove(role);
+                        //NOTE - Logger
                         Logger.log(client, `Usunięto role "${role.name}" użytwkownika "${member.user.username}"`);
                     }
                 });
             } catch (err) {
-                Logger.log(client, 'Error while writing the file:' + err, 'error');
-                console.error('Error while parsing the file:', err);
+                //NOTE - Logger
+                Logger.log(client, 'Error podczas zapisywania pliku:' + err, 'error');
+                console.error('Error podczas zapisywania pliku:', err);
             }
         });
     }

@@ -1,9 +1,6 @@
 const { Events } = require('discord.js');
-const moment = require('moment');
 
-const Logger = require('../../Features/Logger.js');
 const Cleaner = require('../../Features/Cleaner.js');
-const { developmentMode } = require('../../config.json');
 const { allowedChannelId } = require('../../apolloConfig.json');
 const { ids } = require('../Assets/msgWl.json');
 

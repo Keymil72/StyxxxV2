@@ -72,6 +72,7 @@ module.exports = {
 
         // stworzenie logów
         const commandData = "``` " + interaction.commandName + " ```";
+        //NOTE - Logger
         Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${chString}`);
     },
 };

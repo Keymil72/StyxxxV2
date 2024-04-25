@@ -31,6 +31,7 @@ module.exports = {
         const filePath = path.join('src', 'Events', 'Assets', 'Role.json');
         fs.readFile(filePath, 'utf8', (err, file) => {
             if (err) {
+                //NOTE - Logger
                 Logger.log(client, 'Error while writing the file:' + err);
                 console.error('Error while reading the file:', err);
                 return
@@ -42,10 +43,12 @@ module.exports = {
                     if (message.id === element.messageId && reaction.emoji.name === element.emoji) {
                         const role = reaction.message.guild.roles.cache.find(role => role.name === element.role);
                         await member.roles.add(role);
+                        //NOTE - Logger
                         Logger.log(client, `Dodano role "${role.name}" użytkownikowi "${member.user.username}"`);
                     }
                 });
             } catch (err) {
+                //NOTE - Logger
                 Logger.log(client, 'Error while writing the file:' + err, 'error');
             }
         });

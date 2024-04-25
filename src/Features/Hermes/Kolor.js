@@ -33,9 +33,11 @@ let bazowyKolor = '#000000';
 function sprawdz(kolor){
     if (dozwoloneKolory.includes(kolor))
     {
+        //NOTE - Logger
         Logger.log(null, `Kolor ${kolor} znajduje się na liście obsługiwanych kolorów`, 'dev Kolor.sprawdz');
         return kolor;
     }
+    //NOTE - Logger
     Logger.log(null, `Kolor ${kolor} nie znajduje się na liście obsługiwanych kolorów, zwracam kolor bazowy ${bazowyKolor}`, 'dev Kolor.sprawdz');
     return bazowyKolor;
 }

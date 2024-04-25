@@ -16,6 +16,7 @@ module.exports = {
         const ms = Math.abs(Date.now() - interaction.createdTimestamp);
         // wyświetlenie aktualnego pingu bota
         await interaction.reply({ content: `STYXXX dopłynął z opóźnieniem ${ms}ms.`, ephemeral: true });
+        //NOTE - Logger
         Logger.log(client, `Sprawdzono opóźnienie Styxxx'u - ${ms}ms`, 'dev info ping');
     },
 };

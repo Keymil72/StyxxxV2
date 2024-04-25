@@ -35,6 +35,7 @@ module.exports = {
         // sprawdzenie czy użytkownik ma uprawnienia do wykonania komendy i wysłanie logów
         if (!member.roles.cache.some(role => role.name === adminRole)) {
             await interaction.reply({ content: 'Nie masz uprawnień do wykonania tej komendy', ephemeral: true });
+            //NOTE - Logger
             Logger.log(interaction.client, `Użytkownik ${member.user.username} próbował wykonać komendę ${interaction.commandName} na kanale ${chString} - brak uprawnień`, 'error');
             return;
         }
@@ -54,6 +55,7 @@ module.exports = {
                             if (message.deletable) {
                                 // stworzenie logów wiadomości
                                 let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
+                                //NOTE - Logger
                                 Logger.log(interaction.client, `Usunięto wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${chString} przez użytkownika ${member.user.username}`, 'msgContent');
                                 message.delete()
                                 messagesDeleted++;
@@ -70,6 +72,7 @@ module.exports = {
                             if (message.deletable) {
                                 // stworzenie logów wiadomości
                                 let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
+                                //NOTE - Logger
                                 Logger.log(interaction.client, `Usunięto wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${chString} przez użytkownika ${member.user.username}`, 'msgContent');
                                 message.delete()
                                 messagesDeleted++;
@@ -79,21 +82,26 @@ module.exports = {
                 }
                 // sprawdzenie czy przeciążenie zawiera "-h" - hidden i stworzenie odpowiednich logów
                 if (overload.includes("-h"))
+                    //NOTE - Logger
                     Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał komendę ${commandData} na kanale ${chString}`, 'cls hiddencritical');
                 // w przeciwnym razie informacja zostanie wyświetlona na kanale logów
                 else
+                    //NOTE - Logger
                     Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał komendę ${commandData} na kanale ${chString}`, 'cls critical');
                 // stworzenie logów o ilości usuniętych wiadomościach
+                //NOTE - Logger
                 Logger.log(client, `Usunięto ${messagesDeleted} wiadomości z kanału ${ch.toString()} przez ${member.toString()}`, 'info');
             } else {
                 // odpowiedź na błędną ilość wiadomości do usunięcia
                 await interaction.reply({ content: 'Nie podano liczby wiadomości do usunięcia', ephemeral: true });
+                //NOTE - Logger
                 Logger.log(interaction.client, `Użytkownik ${member.user.username} próbował wykonać komendę ${interaction.commandName} na kanale ${chString} - brak liczby wiadomości`, 'error');
                 return;
             }
         } else {
             // odpowiedź na brak odpowiedniego argumentu przeciążenia dla kanału logów
             await interaction.reply({ content: 'Nie można usunąć wiadomości na tym kanale', ephemeral: true });
+            //NOTE - Logger
             Logger.log(interaction.client, `Użytkownik ${member.user.username} próbował wykonać komendę ${interaction.commandName} na kanale ${chString} - nie można usunąć wiadomości z tego kanału`, 'error');
             return;
         }

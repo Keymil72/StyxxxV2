@@ -27,6 +27,7 @@ module.exports = {
             // opuszczenie serwera, odpowiedź o opuszczeniu serwera i stworzenie logów
             await server.leave();
             await interaction.reply({ content: `STYXXX zawrócił swóje koryto i już nie płynie na ${server.name} na polecenie ${user.toString()}`, ephemeral: true });
+            //NOTE - Logger
             Logger.log(client, `STYXXX zawrócił swóje korytko i już nie płynie na ${server.name} na polecenie ${user.toString()}`, 'info');
         }
     },

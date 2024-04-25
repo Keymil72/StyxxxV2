@@ -30,6 +30,7 @@ module.exports = {
             msgWLIds.dodaj(message);
             // odpowiedź o dodaniu wiadomości do white listy i stworzenie logów
             await interaction.reply({ content: `Dodano wiadomosc o id ${id}`, ephemeral: true });
+            //NOTE - Logger 
             Logger.log(client, `Dodano wiadomosc o id ${id} do white listy wiadomości przez ${interaction.user.tag}`, "dodaj-id-wiadomosci");
         }else{
             // odpowiedź o nie znalezieniu wiadomości

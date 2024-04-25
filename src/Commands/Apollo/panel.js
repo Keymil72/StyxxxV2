@@ -1,6 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const msgWLIds = require('../../Features/msgWLIds.js');
-const ms = require('ms');
 
 module.exports = {
     data: new SlashCommandBuilder()

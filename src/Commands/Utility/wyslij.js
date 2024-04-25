@@ -25,6 +25,7 @@ module.exports = {
 
         // stworzenie logów
         const commandData = "``` " + interaction.commandName + " tekst: " + args + " ```";
+        //NOTE - Logger
         Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${ch.toString()}`, 'wyslij hidden');
 	},
 };

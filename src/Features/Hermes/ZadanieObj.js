@@ -1,5 +1,3 @@
-const Logger = require('../Logger.js');
-
 // eksportuje klasę Zadanie, która jest obiektem, który zawiera wszystkie informacje o zadaniu
 module.exports = class Zadanie {
     constructor(id, nazwa, kolor, termin, opis, link, zdjecie, czyAktywne, fk_uzytkownikId) {

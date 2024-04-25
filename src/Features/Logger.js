@@ -1,33 +1,39 @@
-const { EmbedBuilder } = require('discord.js');
 const moment = require('moment');
 const fs = require('fs');
 const path = require('path');
 const DataBase = require('../DataBase');;
 
-const { LogChannelName } = require('../channelsConfig.json');
+const { LogChannelName, adminId } = require('../channelsConfig.json');
 
 // słowa kluczowe, które nie mają być logowane na kanale
 const noChannelLogWords = ['msgContent', 'dev', 'zadanie', 'hidden',];
 
 
 // podmienić logger na ten !!!
-async function logDb(client, message, emitter = "unknown", mode = 'log'){
+async function logDb(client, message, emitter = "unknown", type = 'log'){
     // tworzy prefix
     // dodać do sql query by data była dodana automatycznie (raczej małe opóźnienia)!!!
-    let prefix = mode.toUpperCase();
+    let prefix = type.toUpperCase();
     if (client != null){
+        // deklaruje stałe do wiadomości logu
+        const admin = client.users.cache.get(adminId);
+        const now = moment.now = moment().format('YYYY-MM-DD HH:mm:ss');
+        const prefix = `(INFO [${now}])`;
+        message = `${prefix} ${message}`;
+        message = type.toLowerCase().includes("error") ? `{${message} ${admin.toString()}}` : message;
         // pobiera kanał logów
         const channel = client.channels.cache.find(channel => channel.name === LogChannelName);
         // jeśli wiadomość nie zawiera słów kluczowych, to ją loguj
-        if (!noChannelLogWords.some(word => mode.includes(word))) await channel.send({ content: message });
-        // dokończyć !!!
-        let sqlQuery = `INSERT INTO logs (message, emitter, type) VALUES ('${message}', '${emitter}', '${mode}')`;
+        if (!noChannelLogWords.some(word => type.includes(word))) await channel.send({ content: message });
+        //TODO - Dokończyć
+        let sqlQuery = `INSERT INTO StyxxxDcBot.Logs (message, emitter, emittedTime, type) VALUES ('${message}', '${emitter}', DATE_ADD(now(),interval 2 hour), '${type}')`;
         DataBase.query(sqlQuery, (err, result) => {
             if (err) throw err;
+            //FIXME - Na Loggera
             console.log(result);
         });
-    }else if (!noChannelLogWords.some(word => mode.includes(word))) {
-        log(null, `ERROR brak clienta przy podanym mode ${mode}!!!`, 'dev error!!!');
+    }else if (!noChannelLogWords.some(word => type.includes(word))) {
+        log(null, `ERROR brak clienta przy podanym typie ${type}!!!`, 'dev error!!!');
     }
 }
 

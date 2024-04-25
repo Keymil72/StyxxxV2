@@ -41,6 +41,7 @@ module.exports = {
         // sprawdzenie uprawnień użytkownika
         if (!member.roles.cache.some(role => role.name === adminRole)) {
             // odpowiedź o braku uprawnień
+            //NOTE - Logger
             logger.log(client, `Użytkownik "${member.user.username} #${member.id}" usiłował użyć komendy "${interaction.commandName}" nie mając do tego uprawnień.`);
             await interaction.deleteReply();
             return;
@@ -75,6 +76,7 @@ module.exports = {
         fs.readFile(filePath, 'utf8', (err, file) => {
             // sprawdzenie błędów
             if (err) {
+                //NOTE - Logger
                 logger.log(client, 'Error przy wczytywaniu pliku:' + err + ` przez użytkownika: "${member.user.username} #${member.id}"`, 'role-stworz botError');
                 return
             }
@@ -88,15 +90,18 @@ module.exports = {
                 fs.writeFile(filePath, JSON.stringify(dataJson), (err) => {
                     // sprawdzenie błędów
                     if (err) {
+                        //NOTE - Logger
                         logger.log(client, 'Error przy zapisywaniu pliku:' + err + ` przez użytkownika: "${member.user.username} #${member.id}"`, 'role-stworz botError');
                         return
                     }
                 });
             } catch (err) {
+                //NOTE - Logger
                 logger.log(client, 'Error przy zapisywaniu pliku:' + err + ` przez użytkownika: "${member.user.username} #${member.id}"`, 'role-stworz botError');
             }
         });
         // stworzenie logów o dodaniu nowej opcji przypisania roli
+        //NOTE - Logger
         logger.log(client, `Dodano role: "${name}" do reakcji: "${emoji}" na wiadomości na kanale: ${ch.toString()} przez użytkownika: "${member.user.username} #${member.id}"`, 'role-stworz');
     }
 }

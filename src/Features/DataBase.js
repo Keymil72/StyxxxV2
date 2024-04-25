@@ -28,6 +28,7 @@ function polacz(sqlQuery, interactionOrClient, cb){
             // zgłasza błąd jeśli nie uda się wykonać zapytania sql przy pomocy call backa
             if (err) cb(err);
             // po wykonaniu zapytania przekazuje wynik do callbacka
+            //NOTE - Logger
             Logger.log(client, `Wykonano zapytanie: ${sqlQuery}`, 'dev Database');
             cb(result, interactionOrClient);
         });

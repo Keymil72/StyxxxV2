@@ -45,17 +45,20 @@ module.exports = {
                         Cleaner.cleanMessage(attachment);
                     }, 43000);
                     // logi z użycia komendy
+                    //NOTE - Logger
                     Logger.log(interaction.client, `Użytkownik ${user.toString()} wykonał polecenie ${commandData}`);
                 // złapanie błędu
                 }catch (e){
                     // wyświetlenie informacji o błędzie przy wykonywaniu komendy
                     await interaction.editReply({ content: `Błąd podczas wykonywania zapytania: ${query} - ${e}`, ephemeral: true });
+                    //NOTE - Logger
                     Logger.log(client, `Błąd podczas wykonywania zapytania: ${query} - ${e}`, 'dev error Database.polacz');
                 }
             });
         }else{
             // wyświeetlenie informacji o braku uprawnień
             await interaction.reply({ content: 'Nie masz uprawnień do wykonania tej komendy', ephemeral: true });
+            //NOTE - Logger
             Logger.log(interaction.client, `Użytkownik ${user.toString()} próbował wykonać polecenie ${commandData} na kanale ${ch.toString()} bez uprawnień`, 'db critial!!!');
         }
 	},

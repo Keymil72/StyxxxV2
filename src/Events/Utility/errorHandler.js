@@ -10,6 +10,7 @@ module.exports = {
 	execute(error) {
 		const client = index.client;
         let errorMessage = error.toString();
+		//NOTE - Logger
         Logger.log(client, errorMessage, "errorhandler");
 	},
 };

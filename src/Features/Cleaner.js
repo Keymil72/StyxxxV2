@@ -29,9 +29,11 @@ async function cleanMessage(message) {
                         try {
                             let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
                             let ApolloEmbed = message?.embeds?.length ? message.embeds[0]?.author?.name : null;
+                            //NOTE - Logger
                             Logger.log(message.client, `Usuwam wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" z Apollo embed "${ApolloEmbed}" na kanale ${message.channel}`, 'msgContent Cleaner.cleanMessage');
                             await message.delete();
                         }catch (error){
+                            //NOTE - Logger
                             Logger.log(message.client, `Błąd podczas usuwania wiadomości na kanale ${message.channel} - ${error}`, 'dev error Cleaner.cleanMessage');
                         }
                     }, 2000);
@@ -39,6 +41,7 @@ async function cleanMessage(message) {
                     try {
                         await message.edit('Ja tu tylko sprzątam... 🧹');
                     }catch (error){
+                        //NOTE - Logger
                         Logger.log(message.client, `Błąd podczas edycji wiadomości na kanale ${message.channel} - ${error}`, 'dev error Cleaner.cleanMessage');
                     }
                 }, 15000);

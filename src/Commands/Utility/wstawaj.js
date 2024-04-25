@@ -31,6 +31,7 @@ module.exports = {
         } else {
             // odpowiedź na błąd
             await interaction.reply({ content: 'Nie odnaleziono osoby lub jest ona botem :robot:!', ephemeral: true });
+            //NOTE - Logger
             Logger.log(interaction.client, `Nie odnaleziono osoby lub jest ona botem :robot:! - ${user.toString()}`, 'dev info wstawaj');
         }
     },
@@ -60,6 +61,7 @@ module.exports = {
                 await interaction.reply({ content: '```Rzucam!```', ephemeral: true });
                 const commandData = "``` " + interaction.commandName + " " + user.displayName + " " + user.id + " ```";
 
+                //NOTE - Logger
                 await Logger.log(client, `Wykonano polecenie ↴ ${commandData} na polecenie ↴ ${member.toString()} \nna kanale ↴ ${ch.toString()}`, 'wstawaj info');
 
                 // wykonanie metody

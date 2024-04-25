@@ -19,9 +19,11 @@ module.exports = {
             const now = moment().format('DD-MM-YYYY HH:mm:ss');
             // odpowiedź o zatrzymaniu bota
             await interaction.reply({ content: `Zatrzymanie bota nastąpi za 30 sekund...`, ephemeral: true })
+            //NOTE - Logger
             Logger.log(interaction.client, `[${now}] Zatrzymywanie Styxxx'u :ocean: - ${user.toString()}`, 'stop critical!!!');
             // usunięcie odpowiedzi i zatrzymanie bota po 30 sekundach i wyświetlenie logów
             setTimeout(async () => {
+                //NOTE - Logger
                 Logger.log(interaction.client, `[${now}] Styxxx został zatrzymany :octagonal_sign: - ${user.toString()}`, 'stop critical!!!');
                 await interaction.deleteReply();
                 interaction.client.destroy();
@@ -29,6 +31,7 @@ module.exports = {
 
         }else{
             await interaction.reply({ content: 'Nie masz uprawnień do wykonania tej komendy', ephemeral: true });
+            //NOTE - Logger
             Logger.log(interaction.client, `Użytkownik ${user.toString()} próbował wykonać polecenie ${interaction.commandName} na kanale ${interaction.channel.toString()} bez uprawnień`, 'stop');
         }
 	},

@@ -14,6 +14,7 @@ module.exports = {
             let client = message.client;
             const sendedMessage = await message.channel.send('Rozpoczynam dodawanie użytkowników do bazy danych...');
             Uzytkownik.dodajZCache(client, message.interaction);
+            //NOTE - Logger
             Logger.log(client, `Użytkownik ${message.author.toString()} wykonał polecenie !setupUsers na kanale ${message.channel.toString()}`, 'critical');
             await sendedMessage.delete();
         }

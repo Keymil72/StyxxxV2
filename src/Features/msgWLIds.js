@@ -15,14 +15,17 @@ function dodaj(message){
             DataBase.polacz(insertQueru, null, async (result, interaction) =>{
                 // sprawdzenie czy dodanie id wiadomości do listy wykluczeń zakończyło się sukcesem.
                 if (result?.affectedRows == 1){
+                    //NOTE - Logger
                     Logger.log(null, `Dodano id wiadomości ${message.id} do listy wykluczeń z cleanera :broom:.`, 'dev msgWLIds.js');
                     await channel.send("Dodano id wiadomości do listy wykluczeń z cleanera :broom:.");
                 }else{
+                    //NOTE - Logger
                     Logger.log(null, `Błąd dodawania id wiadomości ${message.id} do listy wykluczeń z cleanera :broom:.`, 'dev msgWLIds.js');
                     await channel.send("Błąd dodawania id wiadomości do listy wykluczeń z cleanera :broom:.");
                 }
             });
         }else{
+            //NOTE - Logger
             Logger.log(null, `Id wiadomości ${message.id} już znajduje się na liście wykluczeń z cleanera :broom:.`, 'dev msgWLIds.js');
             await channel.send("Id wiadomości już znajduje się na liście wykluczeń z cleanera :broom:.");
         }
