@@ -2,6 +2,7 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { channelLogId } = require('../../config.json');
 const { adminRole } = require('../../Events/Assets/Role.json');
 const Logger = require('../../Features/Logger.js');
+const path = require('path');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -34,8 +35,8 @@ module.exports = {
         // sprawdzenie czy użytkownik ma uprawnienia do wykonania komendy i wysłanie logów
         if (!member.roles.cache.some(role => role.name === adminRole)) {
             await interaction.reply({ content: 'Nie masz uprawnień do wykonania tej komendy', ephemeral: true });
-            //NOTE - Logger
-            Logger.log(interaction.client, `Użytkownik ${member.user.username} próbował wykonać komendę ${interaction.commandName} na kanale ${chString} - brak uprawnień`, 'error');
+            //NOTE - Logger done
+            Logger.log(interaction.client, `Użytkownik ${member.user.username} próbował wykonać komendę ${interaction.commandName} na kanale ${chString} - brak uprawnień`, `${path.dirname}/${path.basename}`, 'permission Error');
             return;
         }
 
@@ -54,8 +55,8 @@ module.exports = {
                             if (message.deletable) {
                                 // stworzenie logów wiadomości
                                 let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
-                                //NOTE - Logger
-                                Logger.log(interaction.client, `Usunięto wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${chString} przez użytkownika ${member.user.username}`, 'msgContent');
+                                //NOTE - Logger done
+                                Logger.log(interaction.client, `Usunięto wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${chString} przez użytkownika ${member.user.username}`, `${path.dirname}/${path.basename}`, 'Content');
                                 message.delete()
                                 messagesDeleted++;
                             }
@@ -71,37 +72,36 @@ module.exports = {
                             if (message.deletable) {
                                 // stworzenie logów wiadomości
                                 let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
-                                //NOTE - Logger
-                                Logger.log(interaction.client, `Usunięto wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${chString} przez użytkownika ${member.user.username}`, 'msgContent');
+                                //NOTE - Logger done
+                                Logger.log(interaction.client, `Usunięto wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${chString} przez użytkownika ${member.user.username}`, `${path.dirname}/${path.basename}`, 'Content');
                                 message.delete()
                                 messagesDeleted++;
                             }
                         });
                     });
                 }
-                // sprawdzenie czy przeciążenie zawiera "-h" - hidden i stworzenie odpowiednich logów
-                if (overload.includes("-h"))
-                    //NOTE - Logger
-                    Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał komendę ${commandData} na kanale ${chString}`, 'cls hiddencritical');
-                // w przeciwnym razie informacja zostanie wyświetlona na kanale logów
-                else
-                    //NOTE - Logger
-                    Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał komendę ${commandData} na kanale ${chString}`, 'cls critical');
+                //NOTE - Logger done
+                Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał komendę ${commandData} na kanale ${chString}`, `${path.dirname}/${path.basename}`, 'log -h');
+
                 // stworzenie logów o ilości usuniętych wiadomościach
-                //NOTE - Logger
-                Logger.log(client, `Usunięto ${messagesDeleted} wiadomości z kanału ${ch.toString()} przez ${member.toString()}`, 'info');
+                if (overload.includes("-h"))
+                    //NOTE - Logger done
+                    Logger.log(client, `Usunięto ${messagesDeleted} wiadomości z kanału ${ch.toString()} przez ${member.toString()}`, `${path.dirname}/${path.basename}`, 'log -h');
+                else
+                    //NOTE - Logger done
+                    Logger.log(client, `Usunięto ${messagesDeleted} wiadomości z kanału ${ch.toString()} przez ${member.toString()}`, `${path.dirname}/${path.basename}`);
             } else {
                 // odpowiedź na błędną ilość wiadomości do usunięcia
                 await interaction.reply({ content: 'Nie podano liczby wiadomości do usunięcia', ephemeral: true });
-                //NOTE - Logger
-                Logger.log(interaction.client, `Użytkownik ${member.user.username} próbował wykonać komendę ${interaction.commandName} na kanale ${chString} - brak liczby wiadomości`, 'error');
+                //NOTE - Logger done
+                Logger.log(interaction.client, `Użytkownik ${member.user.username} próbował wykonać komendę ${interaction.commandName} na kanale ${chString} - brak liczby wiadomości`, `${path.dirname}/${path.basename}`, 'permission Error');
                 return;
             }
         } else {
             // odpowiedź na brak odpowiedniego argumentu przeciążenia dla kanału logów
             await interaction.reply({ content: 'Nie można usunąć wiadomości na tym kanale', ephemeral: true });
-            //NOTE - Logger
-            Logger.log(interaction.client, `Użytkownik ${member.user.username} próbował wykonać komendę ${interaction.commandName} na kanale ${chString} - nie można usunąć wiadomości z tego kanału`, 'error');
+            //NOTE - Logger done
+            Logger.log(interaction.client, `Użytkownik ${member.user.username} próbował wykonać komendę ${interaction.commandName} na kanale ${chString} - nie można usunąć wiadomości z tego kanału`, `${path.dirname}/${path.basename}`, 'permission Error');
             return;
         }
         // odpowiedz na wykonanie komendy

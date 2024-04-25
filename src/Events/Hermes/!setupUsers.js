@@ -1,5 +1,6 @@
 const { Events } = require('discord.js');
 
+const path = require('path');
 const Logger = require('../../Features/Logger.js');
 const Uzytkownik = require('../../Features/Hermes/Uzytkownik.js');
 
@@ -14,8 +15,8 @@ module.exports = {
             let client = message.client;
             const sendedMessage = await message.channel.send('Rozpoczynam dodawanie użytkowników do bazy danych...');
             Uzytkownik.dodajZCache(client, message.interaction);
-            //NOTE - Logger
-            Logger.log(client, `Użytkownik ${message.author.toString()} wykonał polecenie !setupUsers na kanale ${message.channel.toString()}`, 'critical');
+            //NOTE - Logger done
+            Logger.log(client, `Użytkownik ${message.author.toString()} wykonał polecenie !setupUsers na kanale ${message.channel.toString()}`, `${path.dirname}/${path.basename}`, "control required");
             await sendedMessage.delete();
         }
     },

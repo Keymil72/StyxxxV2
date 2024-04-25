@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
+const path = require('path');
 const Logger = require('../../Features/Logger.js');
 const moment = require('moment');
 const { adminId } = require('../../config.json');
@@ -19,20 +20,20 @@ module.exports = {
             const now = moment().format('DD-MM-YYYY HH:mm:ss');
             // odpowiedź o zatrzymaniu bota
             await interaction.reply({ content: `Zatrzymanie bota nastąpi za 30 sekund...`, ephemeral: true })
-            //NOTE - Logger
-            Logger.log(interaction.client, `[${now}] Zatrzymywanie Styxxx'u :ocean: - ${user.toString()}`, 'stop critical!!!');
+            //NOTE - Logger done
+            Logger.log(interaction.client, `[${now}] Zatrzymywanie Styxxx'u :ocean: - ${user.toString()}`, `${path.dirname}/${path.basename}`, 'Stop');
             // usunięcie odpowiedzi i zatrzymanie bota po 30 sekundach i wyświetlenie logów
             setTimeout(async () => {
-                //NOTE - Logger
-                Logger.log(interaction.client, `[${now}] Styxxx został zatrzymany :octagonal_sign: - ${user.toString()}`, 'stop critical!!!');
+                //NOTE - Logger done
+                Logger.log(interaction.client, `[${now}] Styxxx został zatrzymany :octagonal_sign: - ${user.toString()}`, `${path.dirname}/${path.basename}`, "info");
                 await interaction.deleteReply();
                 interaction.client.destroy();
             }, 30000);
 
         }else{
             await interaction.reply({ content: 'Nie masz uprawnień do wykonania tej komendy', ephemeral: true });
-            //NOTE - Logger
-            Logger.log(interaction.client, `Użytkownik ${user.toString()} próbował wykonać polecenie ${interaction.commandName} na kanale ${interaction.channel.toString()} bez uprawnień`, 'stop');
+            //NOTE - Logger done
+            Logger.log(interaction.client, `Użytkownik ${user.toString()} próbował wykonać polecenie ${interaction.commandName} na kanale ${interaction.channel.toString()} bez uprawnień`, `${path.dirname}/${path.basename}`, 'permission Error');
         }
 	},
 };

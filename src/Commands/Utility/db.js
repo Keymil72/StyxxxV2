@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
+const path = require('path');
 const Logger = require('../../Features/Logger.js');
 const DataBase = require('../../Features/DataBase.js');
 const Cleaner = require('../../Features/Cleaner.js');
@@ -45,21 +46,21 @@ module.exports = {
                         Cleaner.cleanMessage(attachment);
                     }, 43000);
                     // logi z użycia komendy
-                    //NOTE - Logger
-                    Logger.log(interaction.client, `Użytkownik ${user.toString()} wykonał polecenie ${commandData}`);
+                    //NOTE - Logger done
+                    Logger.log(interaction.client, `Użytkownik ${user.toString()} wykonał polecenie ${commandData}`, `${path.dirname}/${path.basename}`);
                 // złapanie błędu
                 }catch (e){
                     // wyświetlenie informacji o błędzie przy wykonywaniu komendy
                     await interaction.editReply({ content: `Błąd podczas wykonywania zapytania: ${query} - ${e}`, ephemeral: true });
-                    //NOTE - Logger
-                    Logger.log(client, `Błąd podczas wykonywania zapytania: ${query} - ${e}`, 'dev error Database.polacz');
+                    //NOTE - Logger done
+                    Logger.log(client, `Błąd podczas wykonywania zapytania: ${query} - ${e}`, `${path.dirname}/${path.basename}`, 'error');
                 }
             });
         }else{
             // wyświeetlenie informacji o braku uprawnień
             await interaction.reply({ content: 'Nie masz uprawnień do wykonania tej komendy', ephemeral: true });
-            //NOTE - Logger
-            Logger.log(interaction.client, `Użytkownik ${user.toString()} próbował wykonać polecenie ${commandData} na kanale ${ch.toString()} bez uprawnień`, 'db critial!!!');
+            //NOTE - Logger done
+            Logger.log(interaction.client, `Użytkownik ${user.toString()} próbował wykonać polecenie ${commandData} na kanale ${ch.toString()} bez uprawnień`, `${path.dirname}/${path.basename}`, 'permission Error');
         }
 	},
 };

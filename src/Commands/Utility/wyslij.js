@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
+const path = require('path');
 const Logger = require('../../Features/Logger.js');
 
 module.exports = {
@@ -25,7 +26,7 @@ module.exports = {
 
         // stworzenie logów
         const commandData = "``` " + interaction.commandName + " tekst: " + args + " ```";
-        //NOTE - Logger
-        Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${ch.toString()}`, 'wyslij hidden');
+        //NOTE - Logger done
+        Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${ch.toString()}`, `${path.dirname}/${path.basename}`);
 	},
 };

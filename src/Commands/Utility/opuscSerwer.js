@@ -1,8 +1,6 @@
-const moment = require("moment");
-
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
-const { channelLogId } = require("../../config.json");
 
+const path = require('path');
 const Logger = require('../../Features/Logger.js');
 
 module.exports = {
@@ -27,8 +25,8 @@ module.exports = {
             // opuszczenie serwera, odpowiedź o opuszczeniu serwera i stworzenie logów
             await server.leave();
             await interaction.reply({ content: `STYXXX zawrócił swóje koryto i już nie płynie na ${server.name} na polecenie ${user.toString()}`, ephemeral: true });
-            //NOTE - Logger
-            Logger.log(client, `STYXXX zawrócił swóje korytko i już nie płynie na ${server.name} na polecenie ${user.toString()}`, 'info');
+            //NOTE - Logger done
+            Logger.log(client, `STYXXX zawrócił swóje korytko i już nie płynie na ${server.name} na polecenie ${user.toString()}`, `${path.dirname}/${path.basename}`, "control required");
         }
     },
 };

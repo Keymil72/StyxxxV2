@@ -1,3 +1,4 @@
+//REVIEW - Tutaj skończony nowy logger
 const { Events } = require('discord.js');
 const fs = require('node:fs');
 const path = require('node:path');

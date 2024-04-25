@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
+const path = require('path');
 const Logger = require('../../Features/Logger.js');
 const wait = require('node:timers/promises').setTimeout;
 const { adminId } = require('../../config.json');
@@ -31,8 +32,8 @@ module.exports = {
         } else {
             // odpowiedź na błąd
             await interaction.reply({ content: 'Nie odnaleziono osoby lub jest ona botem :robot:!', ephemeral: true });
-            //NOTE - Logger
-            Logger.log(interaction.client, `Nie odnaleziono osoby lub jest ona botem :robot:! - ${user.toString()}`, 'dev info wstawaj');
+            //NOTE - Logger done
+            Logger.log(interaction.client, `Nie odnaleziono osoby lub jest ona botem :robot:! - ${user.toString()}`, `${path.dirname}/${path.basename}`);
         }
     },
 
@@ -61,8 +62,8 @@ module.exports = {
                 await interaction.reply({ content: '```Rzucam!```', ephemeral: true });
                 const commandData = "``` " + interaction.commandName + " " + user.displayName + " " + user.id + " ```";
 
-                //NOTE - Logger
-                await Logger.log(client, `Wykonano polecenie ↴ ${commandData} na polecenie ↴ ${member.toString()} \nna kanale ↴ ${ch.toString()}`, 'wstawaj info');
+                //NOTE - Logger done
+                await Logger.log(client, `Wykonano polecenie ↴ ${commandData} na polecenie ↴ ${member.toString()} \nna kanale ↴ ${ch.toString()}`, `${path.dirname}/${path.basename}`);
 
                 // wykonanie metody
                 await this.moveUserRepeatedly(interaction, target, time);

@@ -6,18 +6,18 @@ const DataBase = require('../DataBase');;
 const { LogChannelName, adminId } = require('../channelsConfig.json');
 
 // słowa kluczowe, które nie mają być logowane na kanale
-const noChannelLogWords = ['msgContent', 'dev', 'zadanie', 'hidden',];
+const noChannelLogWords = ['msgContent', 'dev', 'zadanie', 'hidden', 'permission', '-h', 'log'];
 
 
 // podmienić logger na ten !!!
-async function logDb(client, message, emitter = "unknown", type = 'log'){
+async function log(client, message, emitter = "unknown", type = 'log'){
     // tworzy prefix
     //TODO: dodać do sql query by data była dodana automatycznie (raczej małe opóźnienia)!!!
     if (client != null){
         // deklaruje stałe do wiadomości logu
         const admin = client.users.cache.get(adminId);
         const now = moment.now = moment().format('YYYY-MM-DD HH:mm:ss');
-        const prefix = `(${type} [${now}])`;
+        const prefix = `(${type.toUpperCase()} [${now}])`;
         message = `${prefix} ${message}`;
         message = type.toLowerCase().includes("error") ? `{${message} ${admin.toString()}}` : message;
         // pobiera kanał logów
@@ -36,6 +36,7 @@ async function logDb(client, message, emitter = "unknown", type = 'log'){
     }
 }
 
+/*
 async function log(client, message, mode = 'log') {
     // tworzy ścieżkę do pliku logów z datą w nazwie pliku
     let filePath = path.join('Logs', `${moment().format('DD-MM-YYYY')}.log`);
@@ -61,7 +62,7 @@ async function log(client, message, mode = 'log') {
     // loguje wiadomość w konsoli z prefixem
     console.log(`${moment().format('DD-MM-YYYY')} (${prefix}) ${message}`);
 }
-
+*/
 
 // eksportuje funkcje
 module.exports = { log };

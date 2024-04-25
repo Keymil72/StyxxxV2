@@ -1,8 +1,6 @@
-const moment = require("moment");
-
 const { SlashCommandBuilder } = require("discord.js");
-const { channelLogId } = require("../../config.json");
 
+const path = require('path');
 const Logger = require('../../Features/Logger.js');
 
 module.exports = {
@@ -16,7 +14,7 @@ module.exports = {
         const ms = Math.abs(Date.now() - interaction.createdTimestamp);
         // wyświetlenie aktualnego pingu bota
         await interaction.reply({ content: `STYXXX dopłynął z opóźnieniem ${ms}ms.`, ephemeral: true });
-        //NOTE - Logger
-        Logger.log(client, `Sprawdzono opóźnienie Styxxx'u - ${ms}ms`, 'dev info ping');
+        //NOTE - Logger done
+        Logger.log(client, `Sprawdzono opóźnienie Styxxx'u - ${ms}ms`, `${path.dirname}/${path.basename}`);
     },
 };

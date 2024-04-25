@@ -1,12 +1,10 @@
-// dokończyć i przetestować i usunąć json z id wiadomości
-const moment = require("moment");
+//TODO - usunąć plik json o ile jeszcze jest
 
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const msgWLIds = require("../../Features/msgWLIds.js");
 
+const path = require('path');
 const Logger = require('../../Features/Logger.js');
-// dodać obsługę bazy danych
-const DataBase = require('../../Features/DataBase.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -30,8 +28,8 @@ module.exports = {
             msgWLIds.dodaj(message);
             // odpowiedź o dodaniu wiadomości do white listy i stworzenie logów
             await interaction.reply({ content: `Dodano wiadomosc o id ${id}`, ephemeral: true });
-            //NOTE - Logger 
-            Logger.log(client, `Dodano wiadomosc o id ${id} do white listy wiadomości przez ${interaction.user.tag}`, "dodaj-id-wiadomosci");
+            //NOTE - Logger done
+            Logger.log(client, `Dodano wiadomosc o id ${id} do white listy wiadomości przez ${interaction.user.tag}`, `${path.dirname}/${path.basename}`, 'control required');
         }else{
             // odpowiedź o nie znalezieniu wiadomości
             await interaction.reply({ content: `Nie znaleziono wiadomości o id ${id} na kanale ${interaction.channel}`, ephemeral: true });
