@@ -12,13 +12,12 @@ const noChannelLogWords = ['msgContent', 'dev', 'zadanie', 'hidden',];
 // podmienić logger na ten !!!
 async function logDb(client, message, emitter = "unknown", type = 'log'){
     // tworzy prefix
-    // dodać do sql query by data była dodana automatycznie (raczej małe opóźnienia)!!!
-    let prefix = type.toUpperCase();
+    //TODO: dodać do sql query by data była dodana automatycznie (raczej małe opóźnienia)!!!
     if (client != null){
         // deklaruje stałe do wiadomości logu
         const admin = client.users.cache.get(adminId);
         const now = moment.now = moment().format('YYYY-MM-DD HH:mm:ss');
-        const prefix = `(INFO [${now}])`;
+        const prefix = `(${tpe} [${now}])`;
         message = `${prefix} ${message}`;
         message = type.toLowerCase().includes("error") ? `{${message} ${admin.toString()}}` : message;
         // pobiera kanał logów
