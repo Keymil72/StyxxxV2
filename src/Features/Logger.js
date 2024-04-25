@@ -17,7 +17,7 @@ async function logDb(client, message, emitter = "unknown", type = 'log'){
         // deklaruje stałe do wiadomości logu
         const admin = client.users.cache.get(adminId);
         const now = moment.now = moment().format('YYYY-MM-DD HH:mm:ss');
-        const prefix = `(${tpe} [${now}])`;
+        const prefix = `(${type} [${now}])`;
         message = `${prefix} ${message}`;
         message = type.toLowerCase().includes("error") ? `{${message} ${admin.toString()}}` : message;
         // pobiera kanał logów
