@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits, Attachment } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 const Logger = require('../../Features/Logger.js');
 const DataBase = require('../../Features/DataBase.js');
