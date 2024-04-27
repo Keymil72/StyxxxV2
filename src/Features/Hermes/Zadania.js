@@ -10,6 +10,7 @@ const Zdjecie = require('./Zdjecie.js');
 const ZadanieObj = require('./ZadanieObj.js');
 const DataBase = require('../DataBase.js');
 const Watek = require('./Watek.js');
+const path = require('path');
 const { noTasksMessage } = require('../../config.json');
 
 // przyjmuje wszystkie parametry zadania i avatar właściciela i zwraca gotowy embed z thumbnail'em właściciela
@@ -43,8 +44,8 @@ async function dodaj(interaction) {
     // wykonanie zapytania
     DataBase.polacz(query, interaction, async (result, interaction) => {
         await interaction.editReply({ content: `Dodano zadanie: "${zadanie.nazwa}" do twojej listy w wątku kanału "todo"`, ephemeral: true });
-        //NOTE - Logger
-        Logger.log(interaction.client, `${interaction.user.id} wrzucił do STYXXX'u nowe zadanie ${zadanie.id}`, 'dev Zadania.dodaj');
+        //NOTE - Logger done
+        Logger.log(interaction.client, `${interaction.user.id} wrzucił do STYXXX'u nowe zadanie ${zadanie.id}`, `${path.dirname}/${path.basename}`);
         wyswietl(interaction);
     });
 
@@ -64,14 +65,14 @@ async function usun(interaction) {
         if (resultLength > 0) {
             // informacje o wyłączeniu zadania i wyświetlenie zaktualizowanej listy zadań
             await interaction.editReply({ content: `Wyłączyłeś zadanie o id: ${id}`, ephemeral: true });
-            //NOTE - Logger
-            Logger.log(interaction.client, `Wyłączono zadanie ${id} ze STYXXX'u przez ${user.toString()}`, 'dev Zadania.usun');
+            //NOTE - Logger done
+            Logger.log(interaction.client, `Wyłączono zadanie ${id} ze STYXXX'u przez ${user.toString()}`, `${path.dirname}/${path.basename}`);
             wyswietl(interaction);
         } else {
             // informacja o braku zadania o podanym id należącego do użytkownika
             await interaction.editReply({ content: `Nie znaleziono zadania o id: ${id}`, ephemeral: true });
-            //NOTE - Logger
-            Logger.log(interaction.client, `Nie znaleziono zadania ${id} do wyłączenia przez ${interaction.user.id}`, 'dev Zadania.usun');
+            //NOTE - Logger done
+            Logger.log(interaction.client, `Nie znaleziono zadania ${id} do wyłączenia przez ${interaction.user.id}`, `${path.dirname}/${path.basename}`);
         }
 
     });
@@ -110,8 +111,8 @@ async function edytuj(interaction) {
     // jeśli zapytanie zawiera SETWHERE - nie podano żadnych parametrów do aktualizacji zadania gdyż między set a where nie ma nic
     if (query.includes('SETWHERE')) {
         await interaction.editReply({ content: `Hermes nie wie co ma zmienić, zostawia jak było - nie podano żadnych parametrów do aktualizacji zadania`, ephemeral: true });
-        //NOTE - Logger
-        Logger.log(interaction.client, `Hermes nie wie co ma zmienić, zostawia jak było - nie podano żadnych parametrów do aktualizacji zadania ${zadanie.id} przez ${user.id}`, 'dev Zadania.edytuj');
+        //NOTE - Logger done
+        Logger.log(interaction.client, `Hermes nie wie co ma zmienić, zostawia jak było - nie podano żadnych parametrów do aktualizacji zadania ${zadanie.id} przez ${user.id}`, `${path.dirname}/${path.basename}`);
         return;
     }
 
@@ -122,14 +123,14 @@ async function edytuj(interaction) {
         // jeśli zapytanie zwróciło jakieś rezultaty
         if (resultLength > 0) {
             await interaction.editReply({ content: `Hermes odebrał zlecenie edycji zadania o id: ${zadanie.id}`, ephemeral: true });
-            //NOTE - Logger
-            Logger.log(interaction.client, `Hermes odebrał zlecenie edycji zadania o id ${zadanie.id} przez ${user.toString()}`, 'dev Zadania.edytuj');
+            //NOTE - Logger done
+            Logger.log(interaction.client, `Hermes odebrał zlecenie edycji zadania o id ${zadanie.id} przez ${user.toString()}`, `${path.dirname}/${path.basename}`);
             wyswietl(interaction);
             // jeśli zapytanie nie zwróciło żadnych rezultatów
         } else {
             await interaction.editReply({ content: `Nie znaleziono zadania o id: ${zadanie.id}`, ephemeral: true });
-            //NOTE - Logger
-            Logger.log(interaction.client, `Nie znaleziono zadania ${zadanie.id} do aktualizacji przez ${user.id}`, 'dev Zadania.edytuj');
+            //NOTE - Logger done
+            Logger.log(interaction.client, `Nie znaleziono zadania ${zadanie.id} do aktualizacji przez ${user.id}`, `${path.dirname}/${path.basename}`);
         }
     });
 }
@@ -168,8 +169,8 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
                 });
                 // usunięcie wiadomości (bota - użytkownika pozostaną na górze) z wątku użytkownika przed wysłaniem nowych
                 Watek.usunWiadomosci(client, user, async () => {
-                    //NOTE - Logger
-                    Logger.log(client, `Wczytano ${embeds.length} zadań użytkownika ${user.toString()}`, 'dev Zadanie.wyswietl');
+                    //NOTE - Logger done
+                    Logger.log(client, `Wczytano ${embeds.length} zadań użytkownika ${user.toString()}`, `${path.dirname}/${path.basename}`);
                     // wysyła zadania (embedy) do wątku użytkownika
                     Watek.wyslijWiadomosci(client, user, embeds, true, async (response) => {
                         if (interaction != null)
@@ -179,8 +180,8 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
             } else {
                 // usunięcie wiadomości (bota - użytkika pozostaną na górze) z wątku użytkownika przed wysłaniem nowych
                 Watek.usunWiadomosci(client, user, async () => {
-                    //NOTE - Logger
-                    Logger.log(`Brak zadań dla użytkownika ${user.id}`, 'dev Zadanie.wyswietl');
+                    //NOTE - Logger done
+                    Logger.log(`Brak zadań dla użytkownika ${user.id}`, `${path.dirname}/${path.basename}`);
                     // wysyła wiadomość o braku zadań
                     Watek.wyslijWiadomosci(client, user, noTasksMessage, false, async (response) => {
                         if (interaction != null)
@@ -189,16 +190,16 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
                 });
             }
         });
-        //NOTE - Logger
-        Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla użytkownika ${user.toString()}`, 'Zadania.wyswietl dev');
+        //NOTE - Logger done
+        Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla użytkownika ${user.toString()}`, `${path.dirname}/${path.basename}`);
     });
 }
 
 // wyswietla zadania wszystkich użytkowników - potrzebne do automatycznego odświeżania co dany interwał
 // dokończyć !!!
 async function wyswietlWszystkie(client) {
-    //NOTE - Logger
-    Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla wszystkich użytkowników`, 'dev Zadania.wyswietlWszystkie', 'Zadania.wyswietlWszystkie dev');
+    //NOTE - Logger done
+    Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla wszystkich użytkowników`, `${path.dirname}/${path.basename}`);
 
 }
 
@@ -224,8 +225,8 @@ async function statystyki(interaction) {
         });
         // odpoweidź na komendę oraz logi
         await interaction.editReply(`Twoje statystyki to wykonane ${doneCount}/${overAllCount} zadań`);
-        //NOTE - Logger
-        Logger.log(interaction.client, `Wyświetlono statystyki zadań dla użytkownika ${user.id}.`, 'Zadania.statystyki dev');
+        //NOTE - Logger done
+        Logger.log(interaction.client, `Wyświetlono statystyki zadań dla użytkownika ${user.id}.`, `${path.dirname}/${path.basename}`);
     });
 }
 // wyświetla pomoc dotyczącą zadań
@@ -268,15 +269,15 @@ async function wlaczZadanie(interaction) {
         if (Object.keys(result).length > 0){
             // odpowiedź z potwierdzeniem poprawności oraz log z wykonaniem polecenia
             await interaction.editReply(`Zadanie o id zostanie ponownie dostarczanie przez Hermes'a`);
-            //NOTE - Logger
-            Logger.log(interaction.client, `Zadanie o id ${taskId} zostało ponownie włączone na zlecenie ${user.id}`, 'Zadania.wlacz dev')
+            //NOTE - Logger done
+            Logger.log(interaction.client, `Zadanie o id ${taskId} zostało ponownie włączone na zlecenie ${user.id}`, `${path.dirname}/${path.basename}`)
             // automatyczne odświeżenie listy zadań po poprawnym wyłączeniu zadania
             wyswietl(interaction, interaction.client);
         }else{
             // informacja o błędzie przy poprawności danych zadania (poprawne id zadania oraz musi być właścicielem zdania)
             await interaction.editReply(`Hermes nie odnalazł zadania o id ${taskId}, które należy do Ciebie!`);
-            //NOTE - Logger
-            Logger.log(interaction.client, `Hermes nie odnalazł zadania o id ${taskId}, które należałoby do użytkownika ${user.id}`, 'Zadania.wlacz dev');
+            //NOTE - Logger done
+            Logger.log(interaction.client, `Hermes nie odnalazł zadania o id ${taskId}, które należałoby do użytkownika ${user.id}`, `${path.dirname}/${path.basename}`);
         }
     });
 }

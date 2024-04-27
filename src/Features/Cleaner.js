@@ -1,5 +1,6 @@
 const Logger = require('./Logger.js');
 const msgWLIds = require('./msgWLIds.js');
+const path = require('path');
 
 // usuwa wiadomość po 15 sekundach, a następnie usuwa odpowiedź po 2 sekundach
 async function cleanReply(interaction) {
@@ -29,20 +30,20 @@ async function cleanMessage(message) {
                         try {
                             let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
                             let ApolloEmbed = message?.embeds?.length ? message.embeds[0]?.author?.name : null;
-                            //NOTE - Logger
-                            Logger.log(message.client, `Usuwam wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" z Apollo embed "${ApolloEmbed}" na kanale ${message.channel}`, 'msgContent Cleaner.cleanMessage');
+                            //NOTE - Logger done
+                            Logger.log(message.client, `Usuwam wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" z Apollo embed "${ApolloEmbed}" na kanale ${message.channel}`, `${path.dirname}/${path.basename}`, 'Content');
                             await message.delete();
                         }catch (error){
-                            //NOTE - Logger
-                            Logger.log(message.client, `Błąd podczas usuwania wiadomości na kanale ${message.channel} - ${error}`, 'dev error Cleaner.cleanMessage');
+                            //NOTE - Logger done
+                            Logger.log(message.client, `Błąd podczas usuwania wiadomości na kanale ${message.channel} - ${error}`, `${path.dirname}/${path.basename}`, 'Error');
                         }
                     }, 2000);
                     // próba edycji wiadomości i zgłoszenie błędu w przypadku niepowodzenia
                     try {
                         await message.edit('Ja tu tylko sprzątam... 🧹');
                     }catch (error){
-                        //NOTE - Logger
-                        Logger.log(message.client, `Błąd podczas edycji wiadomości na kanale ${message.channel} - ${error}`, 'dev error Cleaner.cleanMessage');
+                        //NOTE - Logger done
+                        Logger.log(message.client, `Błąd podczas edycji wiadomości na kanale ${message.channel} - ${error}`, `${path.dirname}/${path.basename}`, 'Error');
                     }
                 }, 15000);
             }

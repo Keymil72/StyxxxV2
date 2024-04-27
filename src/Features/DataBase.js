@@ -2,6 +2,7 @@ const Mysql = require('mysql2');
 // pobieram dane do połączenia z bazą danych z pliku Config.json
 const { dbHost, dbUser, dbPassword } = require('../config.json');
 const Logger = require('./Logger');
+const path = require('path');
 
 // funkcja łącząca z bazą danych i wykonująca zapytanie sql oraz przekazująca wynik do callbacka
 function polacz(sqlQuery, interactionOrClient, cb){
@@ -28,8 +29,8 @@ function polacz(sqlQuery, interactionOrClient, cb){
             // zgłasza błąd jeśli nie uda się wykonać zapytania sql przy pomocy call backa
             if (err) cb(err);
             // po wykonaniu zapytania przekazuje wynik do callbacka
-            //NOTE - Logger
-            Logger.log(client, `Wykonano zapytanie: ${sqlQuery}`, 'dev Database');
+            //NOTE - Logger done
+            Logger.log(client, `Wykonano zapytanie: ${sqlQuery}`, 'dev Database', `${path.dirname}/${path.basename}`);
             cb(result, interactionOrClient);
         });
     });

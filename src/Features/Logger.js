@@ -6,13 +6,13 @@ const DataBase = require('../DataBase');;
 const { LogChannelName, adminId } = require('../channelsConfig.json');
 
 // słowa kluczowe, które nie mają być logowane na kanale
-const noChannelLogWords = ['msgContent', 'dev', 'zadanie', 'hidden', 'permission', '-h', 'log'];
+const noChannelLogWords = ['Content', 'dev', 'zadanie', 'hidden', 'permission', '-h', 'log'];
 
 
 // podmienić logger na ten !!!
 async function log(client, message, emitter = "unknown", type = 'log'){
     // tworzy prefix
-    //TODO: dodać do sql query by data była dodana automatycznie (raczej małe opóźnienia)!!!
+    //TODO: przetestować czy działa
     if (client != null){
         // deklaruje stałe do wiadomości logu
         const admin = client.users.cache.get(adminId);
@@ -27,9 +27,11 @@ async function log(client, message, emitter = "unknown", type = 'log'){
         //TODO - Dokończyć
         let sqlQuery = `INSERT INTO StyxxxDcBot.Logs (message, emitter, emittedTime, type) VALUES ('${message}', '${emitter}', DATE_ADD(now(),interval 2 hour), '${type}')`;
         DataBase.query(sqlQuery, (err, result) => {
-            if (err) throw err;
-            //FIXME - Na Loggera
-            console.log(result);
+            //REVIEW - Sprawdzić czy działa
+            if (err) {
+                console.log(client, `Błąd Loggera przy dodawaniu logu do bazy danych!!!`, `${path.dirname}/${path.basename}`, 'error');
+                throw err;
+            }
         });
     }else if (!noChannelLogWords.some(word => type.includes(word))) {
         log(null, `ERROR brak clienta przy podanym typie ${type}!!!`, 'dev error!!!');
