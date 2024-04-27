@@ -1,3 +1,4 @@
+//REVIEW - Tu skończyłem sprawdzanie i dodawanie komenatrzy
 const { EmbedBuilder, SlashCommandBuilder } = require('discord.js');
 const { useQueue } = require('discord-player');
 

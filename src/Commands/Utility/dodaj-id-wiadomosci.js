@@ -1,11 +1,10 @@
-//TODO - usunąć plik json o ile jeszcze jest
-
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const msgWLIds = require("../../Features/msgWLIds.js");
 
 const path = require('path');
 const Logger = require('../../Features/Logger.js');
 
+// moduł eksportujący komendę dodającą id wiadomości do white listy
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('dodaj-id-wiadomosci')

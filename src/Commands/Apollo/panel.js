@@ -1,6 +1,7 @@
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const msgWLIds = require('../../Features/msgWLIds.js');
 
+// moduł eksportuje komendę ustawiającą panel kontrolny dla muzyki
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('panel')
@@ -13,20 +14,24 @@ module.exports = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 
     async execute(interaction) { 
-        let Channel = interaction.options.getChannel('kanal');
+        // deklaracja stałej kanału
+        const Channel = interaction.options.getChannel('kanal');
+        // odłożenie odpowiedzi
         await interaction.deferReply();
+        // sprawdzenie czy kanał jest kanałem tekstowym
         if (Channel.type !== 0) return interaction.editReply({ content: `Trzeba oznaczyć kanał ❌`, ephemeral: true})
         
-    
+        // utworzenie embeda z panelu kontrolnego
         const embed = new EmbedBuilder()
             .setTitle('Lutnia - Panel Kontrolny 🎧')
             .setImage(interaction.guild.iconURL({ size: 4096, dynamic: true }))
             .setColor('#2f3136')
             .setFooter({ text: 'Funkcja Apollo -> Styxxx Bot', iconURL: interaction.member.avatarURL({ dynamic: true })})
 
-
+        // edycja wiadomości na kanale z informacją o wysłaniu panelu kontrolnego
         await interaction.editReply({ content: `Lutnia wysłana na kanał ${Channel}... ✅`, ephemeral: true})
 
+        // deklaracja przycisków
         const Back = new ButtonBuilder()
             .setLabel('Poprzedni')
             .setCustomId(JSON.stringify({ffb: 'Back'}))
@@ -87,13 +92,14 @@ module.exports = {
             .setCustomId(JSON.stringify({ffb: 'Stop'}))
             .setStyle('Danger')
 
-
+        // deklaracja wierszy z przyciskami
         const row1 = new ActionRowBuilder().addComponents(Back, queuebutton, resumepause, np, skip)
         const row2 = new ActionRowBuilder().addComponents(volumedown, loop, save, volumeup)
         const row3 = new ActionRowBuilder().addComponents(lyrics, shuffle, stop)
 
-
+        // wysłanie panelu kontrolnego na kanał
         let msg = await Channel.send({ embeds: [embed], components: [row1, row2, row3] });
+        // dodanie id wiadomości do listy wykluczeń z cleanera
         msgWLIds.dodaj(msg)
     },
 }

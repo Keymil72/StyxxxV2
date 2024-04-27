@@ -1,7 +1,10 @@
 const { EmbedBuilder } = require('discord.js');
+// moduł eksportuje przycisk wyświetlający aktualnie odtwarzany utwór - w embedzie na kanala
 module.exports = async ({ interaction, queue }) => { 
-    if (!queue || !queue.isPlaying()) return interaction.editReply({ content: `Nie odtwarzam aktualnie utworu ❌`, ephemeral: true });
+    // sprawdzenie czy odtwarzam utwór
+    if (!queue?.isPlaying()) return interaction.editReply({ content: `Nie odtwarzam aktualnie utworu ❌`, ephemeral: true });
 
+    // deklaracja stałych
     const client = interaction.client;
     const track = queue.currentTrack;
 
@@ -13,7 +16,7 @@ module.exports = async ({ interaction, queue }) => {
 
     const progress = queue.node.createProgressBar();
     
-
+    // stworzenie embeda z informacjami aktualnie odtwarzanego utworu
     const embed = new EmbedBuilder()
     .setAuthor({ name: `${track.author} - ${track.title}`,  iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true })})
     .setThumbnail(track.thumbnail)
@@ -21,6 +24,6 @@ module.exports = async ({ interaction, queue }) => {
     .setFooter({ text: 'Funkcja Apollo -> Styxxx Bot', iconURL: interaction.member.avatarURL({ dynamic: true })})
     .setColor('ff0000')
     .setTimestamp()
-
-    interaction.editReply({ embeds: [embed], ephemeral: true });
+    // edycja embeda na kanale
+    await interaction.editReply({ embeds: [embed], ephemeral: true });
 }
