@@ -2,6 +2,8 @@ const { EpicFreeGames } = require('epic-free-games');
 const moment = require('moment');
 const fs = require('fs');
 const { EmbedBuilder } = require('discord.js');
+const path = require('path');
+const Logger = require('./Logger.js');
 
 // funkcja wyświetlająca darmowe gry na kanale
 function display(client) {
@@ -48,8 +50,7 @@ function display(client) {
             saveData(titles);
         }
     }).catch(err => {
-        //FIXME - Na Loggera
-        console.log("Api Error: " + err);
+        Logger.log(client, `Api Error - ${err}`, `${path.dirname}/${path.basename}`, 'Error');
     });
 }
 

@@ -3,6 +3,7 @@ const moment = require('moment');
 
 const path = require('path');
 const Logger = require('../../Features/Logger.js');
+const EpicGames = require('../../Features/EpicGames.js')
 const { developmentMode } = require('../../config.json');
 
 module.exports = {
@@ -20,5 +21,10 @@ module.exports = {
 			client.user.setPresence({ activities: [{ name: '/pomoc', type: ActivityType.Listening }], status: 'online' });
 		else
 			client.user.setPresence({ activities: [{ name: 'W trakcie budowy /pomoc', type: ActivityType.Custom }], status: 'dnd' });
+
+		// wyświetla darmowe gry na kanale co godzinę
+		setInterval(() => {
+			EpicGames.display(client);
+		}, 1000 * 60 * 60);
 	},
 };
