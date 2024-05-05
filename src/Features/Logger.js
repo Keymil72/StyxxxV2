@@ -32,7 +32,6 @@ async function log(client, message, emitter = "unknown", type = 'log'){
             //REVIEW - Sprawdzić czy działa
             if (!client) {
                 console.log(`Błąd Loggera przy dodawaniu logu do bazy danych!!!`, `${__filename.slice(__filename.toString().indexOf("src"))}`, 'error');
-                //throw result;
             }
         });
     }else if (!noChannelLogWords.some(word => type.includes(word))) {
