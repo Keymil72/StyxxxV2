@@ -2,7 +2,6 @@ const DataBase = require('../DataBase.js');
 const Logger = require('../Logger.js');
 const Watek = require('./Watek.js');
 const { guildId } = require('../../config.json');
-const path = require('path');
 
 //klasa użytkownika
 class Uzytkownik {
@@ -36,15 +35,15 @@ async function dodaj(client, member) {
             let dcUser = new Uzytkownik(user.id, user.globalName, user.displayAvatarURL(), watek.id);
             // sprawdzić czy działa
             //NOTE - Logger done
-            Logger.log(client, `dcUser ma warości "${dcUser.wyswietl()}"`, `${path.dirname}/${path.basename}`);
+            Logger.log(client, `dcUser ma warości "${dcUser.wyswietl()}"`, __filename);
                 // dodaje użytkownika do bazy danych
                 DataBase.polacz(`INSERT INTO StyxxxDcBot.Uzytkownicy (uzytkownikId, nazwa, avatarUrl, watekId) VALUES ('${dcUser.id}', '${dcUser.nazwa}', '${dcUser.avatarUrl}', '${dcUser.watekId}')`, client, (result, client) => {
                     //NOTE - Logger done
-                    Logger.log(client, `Dodano użytkownika ${dcUser.nazwa}`, `${path.dirname}/${path.basename}`);
+                    Logger.log(client, `Dodano użytkownika ${dcUser.nazwa}`, __filename);
                 });
         }else
             //NOTE - Logger done
-            Logger.log(client, `Uzytkownik ${result[0].nazwa} znajduje się w bazie`, `${path.dirname}/${path.basename}`);
+            Logger.log(client, `Uzytkownik ${result[0].nazwa} znajduje się w bazie`, __filename);
     });
 
 }
@@ -58,7 +57,7 @@ async function dodajZCache(client, interaction) {
             usersIds.push(row.uzytkownikId);
         });
         //NOTE - Logger done
-        Logger.log(client, `usersIds = "${usersIds.length}"`, `${path.dirname}/${path.basename}`, 'info');
+        Logger.log(client, `usersIds = "${usersIds.length}"`, __filename, 'info');
 
         // licznik dodanych użytkowników
         let added = 0;
@@ -67,15 +66,15 @@ async function dodajZCache(client, interaction) {
         //pobiera użytkowników z cache discorda
         let dcUsers = await client.users.cache;
         //NOTE - Logger done
-        Logger.log(client, `dcUsers = "${dcUsers.length}"`, `${path.dirname}/${path.basename}`);
+        Logger.log(client, `dcUsers = "${dcUsers.length}"`, __filename);
         dcUsers.forEach(async user => {
             // pobiera serwer (brak zabezpieczenia przed podaniem złego id serwera)
             let guild = client.guilds.cache.get(guildId);
             //NOTE - Logger done
-            Logger.log(client, `guild (serwer) = "${guild.toString()}"`, `${path.dirname}/${path.basename}`);
+            Logger.log(client, `guild (serwer) = "${guild.toString()}"`, __filename);
             
             //NOTE - Logger done
-            Logger.log(client, `Uzytkownik na serwerze (${guildId}) ${guild.members.cache.get(user.id)}`, `${path.dirname}/${path.basename}`);
+            Logger.log(client, `Uzytkownik na serwerze (${guildId}) ${guild.members.cache.get(user.id)}`, __filename);
             
             if (!user.bot && guild.members.cache.get(user.id) != null){
                 // jeżeli użytkownik nie znajdue się w bazie danych
@@ -86,29 +85,29 @@ async function dodajZCache(client, interaction) {
                 let dcUser = new Uzytkownik(user.id, user.globalName, user.displayAvatarURL(), watek.id);
                     DataBase.polacz(`INSERT INTO StyxxxDcBot.Uzytkownicy (uzytkownikId, nazwa, avatarUrl, watekId) VALUES ('${dcUser.id}', '${dcUser.nazwa}', '${dcUser.avatarUrl}', '${dcUser.watekId}')`, interaction, (result, interaction) => {
                         //NOTE - Logger done
-                        Logger.log(client, `Dodano użytkownika ${dcUser.nazwa}`, `${path.dirname}/${path.basename}`);
+                        Logger.log(client, `Dodano użytkownika ${dcUser.nazwa}`, __filename);
                         added++;
                     });
                 }
                 else {
                     //NOTE - Logger done
-                    Logger.log(null, `Użytkownik ${user.nazwa} już istnieje w bazie danych`, `${path.dirname}/${path.basename}`);
+                    Logger.log(null, `Użytkownik ${user.nazwa} już istnieje w bazie danych`, __filename);
                 }
             } else {
                 //NOTE - Logger done
-                Logger.log(client, `Użytkownik ${user.globalName} nie jest na serwerze TakiSobieDc`, `${path.dirname}/${path.basename}`);
+                Logger.log(client, `Użytkownik ${user.globalName} nie jest na serwerze TakiSobieDc`, __filename);
             }
             dcUsersCount++;
         });
         //NOTE - Logger done
-        Logger.log(client, `Dodano użytkowników do bazydanych ${added}/${dcUsersCount} pobranych.`, `${path.dirname}/${path.basename}`);
+        Logger.log(client, `Dodano użytkowników do bazydanych ${added}/${dcUsersCount} pobranych.`, __filename);
     });
 }
 //pobiera użytkowników z bazy danych
 async function pobierzWszystkich(client, interaction, cb) {
     DataBase.polacz(`SELECT * FROM StyxxxDcBot.Uzytkownicy`, interaction, (result, interaction) => {
         //NOTE - Logger done
-        Logger.log(client, `Pobrano użytkowników z bazy danych - ${Object.keys(result).length} objektów`, `${path.dirname}/${path.basename}`);
+        Logger.log(client, `Pobrano użytkowników z bazy danych - ${Object.keys(result).length} objektów`, __filename);
         //po pobraniu danych z bazy danych, przekazuje je do callbacka
         cb(result, client, interaction);
     });

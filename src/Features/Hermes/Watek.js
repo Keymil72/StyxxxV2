@@ -5,7 +5,6 @@ const { botChannelName } = require('../../channelsConfig.json');
 const Logger = require('../Logger.js');
 const Webhook = require('../Webhook.js');
 const DataBase = require('../DataBase.js');
-const path = require('path');
 
 async function stworz(client, user) {
     // pobiera kanał rodzica, który ma wątki z zadaniami użytkowników
@@ -27,13 +26,13 @@ async function stworz(client, user) {
     setTimeout(async () => {
         await wyslijWiadomosci(client, user, message, false, (msg) => {
             //NOTE - Logger done
-            Logger.log(client, `Wysłano wiadomość powitalną do wątku ${watek.toString()} dla użytkownika ${user.id}`, `${path.dirname}/${path.basename}`);
+            Logger.log(client, `Wysłano wiadomość powitalną do wątku ${watek.toString()} dla użytkownika ${user.id}`, __filename);
         });
     }, 1000 * 7);
 
     // logger i zwrócenie wątku
     //NOTE - Logger done
-    Logger.log(client, `Stworzono wątek ${watek.toString()} dla użytkownika ${user.id}`, `${path.dirname}/${path.basename}`);
+    Logger.log(client, `Stworzono wątek ${watek.toString()} dla użytkownika ${user.id}`, __filename);
     return watek;
 }
 
@@ -47,7 +46,7 @@ async function pobierz(client, user, cb) {
         // pobiera wątek należący do użytkownika
         const thread = parentChannel.threads.cache.find(thread => thread.id === userThreadId);
         //NOTE - Logger done
-        Logger.log(client, `Pobrano wątek ${thread.toString()} dla użytkownika ${user.id}`, `${path.dirname}/${path.basename}`);
+        Logger.log(client, `Pobrano wątek ${thread.toString()} dla użytkownika ${user.id}`, __filename);
         cb(thread);
         return thread;
     });
@@ -67,7 +66,7 @@ async function usunWiadomosci(client, user, cb){
                 if (message?.author?.id == webhook.id) {
                     let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
                     //NOTE - Logger done 
-                    Logger.log(client, `Usunięto wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${thread.toString()} przez użytkownika ${user.username}`, `${path.dirname}/${path.basename}`);
+                    Logger.log(client, `Usunięto wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" na kanale ${thread.toString()} przez użytkownika ${user.username}`, __filename);
                     message.delete();
                 }
             });
@@ -89,7 +88,7 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
             if (!result.length){
                 // wysyła wiadomość o braku zadań z callbackiem i loggerem
                 //NOTE - Logger done
-                Logger.log(client, `Użytkownik ${user.id} nie ma wątku z zadaniami`, `${path.dirname}/${path.basename}`, 'info');
+                Logger.log(client, `Użytkownik ${user.id} nie ma wątku z zadaniami`, __filename, 'info');
                 // wysyła wiadomość o braku wątku z zadaniami
                 cb(`Wyjdź z kanału discord i wejdź ponownie na dowolny kanał disscorda "TakiSobieDc", aby twoje dane wpłynęły do Styxxx'u.`);
             // w przeciwnym razie użytkownik istnieje i powinien istnieć wątek
@@ -99,19 +98,19 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
                 // 
                 if (webhook == null){
                     //NOTE - Logger done
-                    Logger.log(client, `Nie znaleziono webhuka w kanale ${parentChannel.toString()}`, `${path.dirname}/${path.basename}`, 'Error');
+                    Logger.log(client, `Nie znaleziono webhuka w kanale ${parentChannel.toString()}`, __filename, 'Error');
                     // wysyła wiadomość o braku webhuka w kanale z callbackiem
                     cb(`Brak webhuka w kanale ${parentChannel.toString()} skontaktuj się z administratorem aplikacji!!!`);
                     return;
                 }
 
                 //NOTE - Logger done
-                Logger.log(client, `Odnaleziono wątek ${thread.toString()} dla użytkownika ${user.id}`, `${path.dirname}/${path.basename}`);
+                Logger.log(client, `Odnaleziono wątek ${thread.toString()} dla użytkownika ${user.id}`, __filename);
                 if (msgs == noTasksMessage){
                     // wysyła wiadomość o braku zadań
                     await webhook.send({ content: noTasksMessage, threadId: thread.id});
                     //NOTE - Logger done
-                    Logger.log(client, `Wysłano wiadomość o braku zadań do wątku ${thread.toString()} dla użytkownika ${user.id}`, `${path.dirname}/${path.basename}`);
+                    Logger.log(client, `Wysłano wiadomość o braku zadań do wątku ${thread.toString()} dla użytkownika ${user.id}`, __filename);
                     // wysyła wiadomość o braku zadań z callbackiem
                     cb(noTasksMessage);
                     return;
@@ -137,7 +136,7 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
                     }
                     // sprawdzić czy nie ma błędu z msgs - wyświetla undefined / object Object
                     //NOTE - Logger done
-                    Logger.log(client, `Dostarczono zadania (${Object.keys(msgs).length}) dla ${user.id}`, `${path.dirname}/${path.basename}`);
+                    Logger.log(client, `Dostarczono zadania (${Object.keys(msgs).length}) dla ${user.id}`, __filename);
                     // wysyła wiadomość o dostarczeniu zadań z callbackiem
                     cb(`Hermes dostarczył Ci nowe zadania na ${thread.toString()}`);
                     return;

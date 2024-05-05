@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require("discord.js");
-const path = require('path');
 const Logger = require('../../Features/Logger.js');
 const wait = require('node:timers/promises').setTimeout;
 const { adminId } = require('../../config.json');
@@ -33,7 +32,7 @@ module.exports = {
             // odpowiedź na błąd
             await interaction.reply({ content: 'Nie odnaleziono osoby lub jest ona botem :robot:!', ephemeral: true });
             //NOTE - Logger done
-            Logger.log(interaction.client, `Nie odnaleziono osoby lub jest ona botem :robot:! - ${user.toString()}`, `${path.dirname}/${path.basename}`);
+            Logger.log(interaction.client, `Nie odnaleziono osoby lub jest ona botem :robot:! - ${user.toString()}`, __filename);
         }
     },
 
@@ -63,7 +62,7 @@ module.exports = {
                 const commandData = "``` " + interaction.commandName + " " + user.displayName + " " + user.id + " ```";
 
                 //NOTE - Logger done
-                await Logger.log(client, `Wykonano polecenie ↴ ${commandData} na polecenie ↴ ${member.toString()} \nna kanale ↴ ${ch.toString()}`, `${path.dirname}/${path.basename}`);
+                await Logger.log(client, `Wykonano polecenie ↴ ${commandData} na polecenie ↴ ${member.toString()} \nna kanale ↴ ${ch.toString()}`, __filename);
 
                 // wykonanie metody
                 await this.moveUserRepeatedly(interaction, target, time);

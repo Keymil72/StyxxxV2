@@ -1,7 +1,6 @@
 // Opis: Moduł eksportuje funkcje dodawania id wiadomości do listy wykluczeń z cleanera.
 const Logger = require('./Logger.js');
 const DataBase = require('./DataBase.js');
-const path = require('path');
 
 
 function dodaj(message){
@@ -17,17 +16,17 @@ function dodaj(message){
                 // sprawdzenie czy dodanie id wiadomości do listy wykluczeń zakończyło się sukcesem.
                 if (result?.affectedRows == 1){
                     //NOTE - Logger done
-                    Logger.log(null, `Dodano id wiadomości ${message.id} do listy wykluczeń z cleanera :broom:.`, `${path.dirname}/${path.basename}`);
+                    Logger.log(null, `Dodano id wiadomości ${message.id} do listy wykluczeń z cleanera :broom:.`, __filename);
                     await channel.send("Dodano id wiadomości do listy wykluczeń z cleanera :broom:.");
                 }else{
                     //NOTE - Logger done
-                    Logger.log(null, `Błąd dodawania id wiadomości ${message.id} do listy wykluczeń z cleanera :broom:.`, `${path.dirname}/${path.basename}`);
+                    Logger.log(null, `Błąd dodawania id wiadomości ${message.id} do listy wykluczeń z cleanera :broom:.`, __filename);
                     await channel.send("Błąd dodawania id wiadomości do listy wykluczeń z cleanera :broom:.");
                 }
             });
         }else{
             //NOTE - Logger done
-            Logger.log(null, `Id wiadomości ${message.id} już znajduje się na liście wykluczeń z cleanera :broom:.`, `${path.dirname}/${path.basename}`);
+            Logger.log(null, `Id wiadomości ${message.id} już znajduje się na liście wykluczeń z cleanera :broom:.`, __filename);
             await channel.send("Id wiadomości już znajduje się na liście wykluczeń z cleanera :broom:.");
         }
     });

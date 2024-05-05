@@ -29,7 +29,7 @@ module.exports = {
         fs.readFile(filePath, 'utf8', (err, file) => {
             if (err) {
                 //NOTE - Logger done
-                Logger.log(client, 'Error podczas wczytywania pliku:' + err, `${path.dirname}/${path.basename}`, 'error');
+                Logger.log(client, 'Error podczas wczytywania pliku:' + err, __filename, 'error');
                 return;
             }
             try {
@@ -39,12 +39,12 @@ module.exports = {
                         const role = reaction.message.guild.roles.cache.find(role => role.name === element.role);
                         await member.roles.remove(role);
                         //NOTE - Logger done
-                        Logger.log(client, `Usunięto role "${role.name}" użytwkownika "${member.user.username}"`, `${path.dirname}/${path.basename}`);
+                        Logger.log(client, `Usunięto role "${role.name}" użytwkownika "${member.user.username}"`, __filename);
                     }
                 });
             } catch (err) {
                 //NOTE - Logger done
-                Logger.log(client, 'Error podczas zapisywania pliku:' + err, `${path.dirname}/${path.basename}`, 'error');
+                Logger.log(client, 'Error podczas zapisywania pliku:' + err, __filename, 'error');
             }
         });
     }

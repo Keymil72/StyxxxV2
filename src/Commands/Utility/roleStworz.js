@@ -1,3 +1,4 @@
+//REVIEW - przerobić na bazę danych
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 
 const moment = require("moment");
@@ -42,7 +43,7 @@ module.exports = {
         if (!member.roles.cache.some(role => role.name === adminRole)) {
             // odpowiedź o braku uprawnień
             //NOTE - Logger done
-            Logger.log(client, `Użytkownik "${member.user.username} #${member.id}" usiłował użyć komendy "${interaction.commandName}" nie mając do tego uprawnień.`, `${path.dirname}/${path.basename}`, "permission error");
+            Logger.log(client, `Użytkownik "${member.user.username} #${member.id}" usiłował użyć komendy "${interaction.commandName}" nie mając do tego uprawnień.`, __filename, "permission error");
             await interaction.deleteReply();
             return;
         }
@@ -77,7 +78,7 @@ module.exports = {
             // sprawdzenie błędów
             if (err) {
                 //NOTE - Logger done
-                Logger.log(client, 'Error przy wczytywaniu pliku:' + err + ` przez użytkownika: "${member.user.username} #${member.id}"`, `${path.dirname}/${path.basename}`, 'Error');
+                Logger.log(client, 'Error przy wczytywaniu pliku:' + err + ` przez użytkownika: "${member.user.username} #${member.id}"`, __filename, 'Error');
                 return
             }
             // obsługa błędów
@@ -91,11 +92,11 @@ module.exports = {
                 });
             } catch (err) {
                 //NOTE - Logger done
-                Logger.log(client, 'Error przy zapisywaniu pliku:' + err + ` przez użytkownika: "${member.user.username} #${member.id}"`, `${path.dirname}/${path.basename}`, 'Error');
+                Logger.log(client, 'Error przy zapisywaniu pliku:' + err + ` przez użytkownika: "${member.user.username} #${member.id}"`, __filename, 'Error');
             }
         });
         // stworzenie logów o dodaniu nowej opcji przypisania roli
         //NOTE - Logger done
-        Logger.log(client, `Dodano role: "${name}" do reakcji: "${emoji}" na wiadomości na kanale: ${ch.toString()} przez użytkownika: "${member.user.username} #${member.id}"`, `${path.dirname}/${path.basename}`, "control required");
+        Logger.log(client, `Dodano role: "${name}" do reakcji: "${emoji}" na wiadomości na kanale: ${ch.toString()} przez użytkownika: "${member.user.username} #${member.id}"`, __filename, "control required");
     }
 }

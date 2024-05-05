@@ -11,6 +11,6 @@ module.exports = {
 		const client = index.client; 
         let errorMessage = error.toString();
 		//NOTE - Logger done
-        Logger.log(client, errorMessage, "Events/Utility/sharderrorhandler", 'shardError');
+        Logger.log(client, errorMessage, __filename, "error");
 	},
 };

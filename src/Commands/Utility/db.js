@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
-const path = require('path');
 const Logger = require('../../Features/Logger.js');
 const DataBase = require('../../Features/DataBase.js');
 const Cleaner = require('../../Features/Cleaner.js');
@@ -47,20 +46,20 @@ module.exports = {
                     }, 43000);
                     // logi z użycia komendy
                     //NOTE - Logger done
-                    Logger.log(interaction.client, `Użytkownik ${user.toString()} wykonał polecenie ${commandData}`, `${path.dirname}/${path.basename}`);
+                    Logger.log(interaction.client, `Użytkownik ${user.toString()} wykonał polecenie ${commandData}`, __filename);
                 // złapanie błędu
                 }catch (e){
                     // wyświetlenie informacji o błędzie przy wykonywaniu komendy
                     await interaction.editReply({ content: `Błąd podczas wykonywania zapytania: ${query} - ${e}`, ephemeral: true });
                     //NOTE - Logger done
-                    Logger.log(client, `Błąd podczas wykonywania zapytania: ${query} - ${e}`, `${path.dirname}/${path.basename}`, 'error');
+                    Logger.log(client, `Błąd podczas wykonywania zapytania: ${query} - ${e}`, __filename, 'error');
                 }
             });
         }else{
             // wyświeetlenie informacji o braku uprawnień
             await interaction.reply({ content: 'Nie masz uprawnień do wykonania tej komendy', ephemeral: true });
             //NOTE - Logger done
-            Logger.log(interaction.client, `Użytkownik ${user.toString()} próbował wykonać polecenie ${commandData} na kanale ${ch.toString()} bez uprawnień`, `${path.dirname}/${path.basename}`, 'permission Error');
+            Logger.log(interaction.client, `Użytkownik ${user.toString()} próbował wykonać polecenie ${commandData} na kanale ${ch.toString()} bez uprawnień`, __filename, 'permission Error');
         }
 	},
 };

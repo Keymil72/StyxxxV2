@@ -2,7 +2,6 @@ const { Events } = require('discord.js');
 
 const Cleaner = require('../../Features/Cleaner.js');
 const { allowedChannelId } = require('../../apolloConfig.json');
-const { ids } = require('../Assets/msgWl.json');
 
 module.exports = {
     name: Events.MessageCreate,
@@ -10,9 +9,7 @@ module.exports = {
     execute(message) {
         if (message.channel.id == allowedChannelId) {
             setTimeout(async () => {
-                if (!ids.includes(message.id)) {
-                    Cleaner.cleanMessage(message);
-                }
+                Cleaner.cleanMessage(message);
             }, 5000);
         }
     },

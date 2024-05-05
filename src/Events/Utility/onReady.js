@@ -1,7 +1,6 @@
 const { Events, ActivityType } = require('discord.js');
 const moment = require('moment');
 
-const path = require('path');
 const Logger = require('../../Features/Logger.js');
 const EpicGames = require('../../Features/EpicGames.js')
 const { developmentMode } = require('../../config.json');
@@ -12,10 +11,10 @@ module.exports = {
 	execute(client) {
 		if (!developmentMode)
 		//NOTE - Logger done
-			Logger.log(client, `${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`, `${path.dirname}/${path.basename}`, 'Start');
+			Logger.log(client, `${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`, __filename, 'Start');
 		else
 		//NOTE - Logger done
-			Logger.log(client, `${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`, `${path.dirname}/${path.basename}`, 'Start -h');
+			Logger.log(client, `${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`, __filename, 'Start -h');
 		
 		if (!developmentMode)
 			client.user.setPresence({ activities: [{ name: '/pomoc', type: ActivityType.Listening }], status: 'online' });

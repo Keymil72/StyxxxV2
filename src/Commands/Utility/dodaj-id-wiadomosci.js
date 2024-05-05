@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const msgWLIds = require("../../Features/msgWLIds.js");
 
-const path = require('path');
 const Logger = require('../../Features/Logger.js');
 
 // moduł eksportujący komendę dodającą id wiadomości do white listy
@@ -28,7 +27,7 @@ module.exports = {
             // odpowiedź o dodaniu wiadomości do white listy i stworzenie logów
             await interaction.reply({ content: `Dodano wiadomosc o id ${id}`, ephemeral: true });
             //NOTE - Logger done
-            Logger.log(client, `Dodano wiadomosc o id ${id} do white listy wiadomości przez ${interaction.user.tag}`, `${path.dirname}/${path.basename}`, 'control required');
+            Logger.log(client, `Dodano wiadomosc o id ${id} do white listy wiadomości przez ${interaction.user.tag}`, __filename, 'control required');
         }else{
             // odpowiedź o nie znalezieniu wiadomości
             await interaction.reply({ content: `Nie znaleziono wiadomości o id ${id} na kanale ${interaction.channel}`, ephemeral: true });

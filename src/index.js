@@ -6,7 +6,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const { token } = require('./config.json');
-const { discordPlayer } = require('./config.json');
 
 // stworzenie klienta
 global.client = new Client({
@@ -86,7 +85,7 @@ client.on(Events.InteractionCreate, async interaction => {
 });
 
 
-const player = new Player(client, discordPlayer);
+const player = new Player(client);
 global.genius = new Genius.Client();
 player.extractors.loadDefault();
 

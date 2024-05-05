@@ -1,6 +1,5 @@
 const Logger = require('./Logger.js');
 const msgWLIds = require('./msgWLIds.js');
-const path = require('path');
 
 // usuwa wiadomość po 15 sekundach, a następnie usuwa odpowiedź po 2 sekundach
 async function cleanReply(interaction) {
@@ -31,11 +30,11 @@ async function cleanMessage(message) {
                             let attachmentUrl = message.attachments.first() ? message.attachments.first().url : null;
                             let ApolloEmbed = message?.embeds?.length ? message.embeds[0]?.author?.name : null;
                             //NOTE - Logger done
-                            Logger.log(message.client, `Usuwam wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" z Apollo embed "${ApolloEmbed}" na kanale ${message.channel}`, `${path.dirname}/${path.basename}`, 'Content');
+                            Logger.log(message.client, `Usuwam wiadomość "${message.content}" z załącznikiem "${attachmentUrl}" z Apollo embed "${ApolloEmbed}" na kanale ${message.channel}`, __filename, 'Content');
                             await message.delete();
                         }catch (error){
                             //NOTE - Logger done
-                            Logger.log(message.client, `Błąd podczas usuwania wiadomości na kanale ${message.channel} - ${error}`, `${path.dirname}/${path.basename}`, 'Error');
+                            Logger.log(message.client, `Błąd podczas usuwania wiadomości na kanale ${message.channel} - ${error}`, __filename, 'Error');
                         }
                     }, 2000);
                     // próba edycji wiadomości i zgłoszenie błędu w przypadku niepowodzenia
@@ -43,7 +42,7 @@ async function cleanMessage(message) {
                         await message.edit('Ja tu tylko sprzątam... 🧹');
                     }catch (error){
                         //NOTE - Logger done
-                        Logger.log(message.client, `Błąd podczas edycji wiadomości na kanale ${message.channel} - ${error}`, `${path.dirname}/${path.basename}`, 'Error');
+                        Logger.log(message.client, `Błąd podczas edycji wiadomości na kanale ${message.channel} - ${error}`, __filename, 'Error');
                     }
                 }, 15000);
             }

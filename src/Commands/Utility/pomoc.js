@@ -3,7 +3,6 @@ const moment = require("moment");
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { allowedChannelId } = require("../../apolloConfig.json");
 
-const path = require('path');
 const Logger = require('../../Features/Logger.js');
 
 module.exports = {
@@ -73,6 +72,6 @@ module.exports = {
         // stworzenie logów
         const commandData = "``` " + interaction.commandName + " ```";
         //NOTE - Logger done
-        Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${chString}`,  `${path.dirname}/${path.basename}`);
+        Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${chString}`,  __filename);
     },
 };

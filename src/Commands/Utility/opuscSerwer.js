@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, PermissionFlagsBits } = require("discord.js");
 
-const path = require('path');
 const Logger = require('../../Features/Logger.js');
 
 module.exports = {
@@ -26,7 +25,7 @@ module.exports = {
             await server.leave();
             await interaction.reply({ content: `STYXXX zawrócił swóje koryto i już nie płynie na ${server.name} na polecenie ${user.toString()}`, ephemeral: true });
             //NOTE - Logger done
-            Logger.log(client, `STYXXX zawrócił swóje korytko i już nie płynie na ${server.name} na polecenie ${user.toString()}`, `${path.dirname}/${path.basename}`, "control required");
+            Logger.log(client, `STYXXX zawrócił swóje korytko i już nie płynie na ${server.name} na polecenie ${user.toString()}`, __filename, "control required");
         }
     },
 };

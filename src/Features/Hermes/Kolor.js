@@ -1,5 +1,4 @@
 const Logger = require('../Logger.js');
-const path = require('path');
 
 let dozwoloneKolory = [
     '#000000',
@@ -35,11 +34,11 @@ function sprawdz(kolor){
     if (dozwoloneKolory.includes(kolor))
     {
         //NOTE - Logger done
-        Logger.log(null, `Kolor ${kolor} znajduje się na liście obsługiwanych kolorów`, `${path.dirname}/${path.basename}`);
+        Logger.log(null, `Kolor ${kolor} znajduje się na liście obsługiwanych kolorów`, __filename);
         return kolor;
     }
     //NOTE - Logger done
-    Logger.log(null, `Kolor ${kolor} nie znajduje się na liście obsługiwanych kolorów, zwracam kolor bazowy ${bazowyKolor}`, `${path.dirname}/${path.basename}`);
+    Logger.log(null, `Kolor ${kolor} nie znajduje się na liście obsługiwanych kolorów, zwracam kolor bazowy ${bazowyKolor}`, __filename);
     return bazowyKolor;
 }
 
