@@ -10,6 +10,8 @@ const Zdjecie = require('./Zdjecie.js');
 const ZadanieObj = require('./ZadanieObj.js');
 const DataBase = require('../DataBase.js');
 const Watek = require('./Watek.js');
+const Uzytkownik = require('./Uzytkownik.js');
+const UzytkownikObj = require('./UzytkownikObj.js');
 const { noTasksMessage } = require('../../config.json');
 
 // przyjmuje wszystkie parametry zadania i avatar właściciela i zwraca gotowy embed z thumbnail'em właściciela
@@ -136,12 +138,16 @@ async function edytuj(interaction) {
 
 // wyswietla zadania użytkownika, czyAktywne = 0 - nieaktywne, czyAktywne = 1 - aktywne, czyAktywne = 2 - wszystkie
 async function wyswietl(interaction, client, czyAktywne = 1, userId) {
-    let user = interaction != null ? interaction.user : client.users.cache.get(userId);
-    if (interaction.options.getInteger('opcje') != null)
-        czyAktywne = interaction.options.getInteger('opcje');
+    let user;
+    if (interaction != null)
+        user = interaction.user;
+    else
+        user = new UzytkownikObj(userId);
+    if (interaction?.options?.getInteger('opcje') != null)
+        czyAktywne = interaction?.options?.getInteger('opcje');
     // odłożenie odpowiedzi na później
-    if (!interaction.deferred)
-        await interaction.deferReply({ ephemeral: true });
+    if (!interaction?.deferred)
+        await interaction?.deferReply({ ephemeral: true });
     // zapytanie do bazy danych
     let query = `select Zadania.zadanieId, Zadania.nazwa, Zadania.kolor, Zadania.termin, Zadania.opis, Zadania.link, Zadania.zdjecie, Zadania.czyAktywne, Uzytkownicy.uzytkownikId, Uzytkownicy.avatarUrl from StyxxxDcBot.Zadania left join StyxxxDcBot.Uzytkownicy on StyxxxDcBot.Uzytkownicy.uzytkownikId = StyxxxDcBot.Zadania.fk_uzytkownikId where StyxxxDcBot.Zadania.fk_uzytkownikId = ${user.id}`;
     // jeśli czyAktywne nie wynosi 2 (wyświetlanie wszystkich zadań), jeśli 0 - wyświetla nieaktywne, jeśli 1 - wyświetla aktywne
@@ -152,53 +158,70 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
     DataBase.polacz(query, interaction, async (result, interaction) => {
         client = interaction == null ? client : interaction.client;
 
-        // pobiera wątek użytkownika (użycie callbacka z powodu opóźnień, które mogą spowodować ustawienie zmiennej na undefined) i wysyła do niego zadania 
-        await Watek.pobierz(client, user, async (userThread) => {
-            let embeds = [];
-            // jeśli są jakieś zadania w bazie danych
-            if (result.length > 0) {
-                // dla każdego zadania w bazie danych
-                result.forEach(async row => {
-                    // pobiera zadanie z bazy danych
-                    let zadanie = await pobierzZadanie(row);
-                    // przekształca zadanie na embeda
-                    let embed = budowniczyEmbeda(zadanie, row.avatarUrl);
-                    // dodaje embeda do tablicy
-                    embeds.push(embed);
+        let embeds = [];
+        // jeśli są jakieś zadania w bazie danych
+        if (result.length > 0) {
+            // dla każdego zadania w bazie danych
+            result.forEach(async row => {
+                // pobiera zadanie z bazy danych
+                let zadanie = await pobierzZadanie(row);
+                // przekształca zadanie na embeda
+                let embed = budowniczyEmbeda(zadanie, row.avatarUrl);
+                // dodaje embeda do tablicy
+                embeds.push(embed);
+            });
+
+            Watek.pobierz(client, user, async (thread) => {
+            });
+            
+            // usunięcie wiadomości (bota - użytkownika pozostaną na górze) z wątku użytkownika przed wysłaniem nowych
+            Watek.usunWiadomosci(client, user, async () => {
+                //NOTE - Logger done
+                Logger.log(client, `Wczytano ${embeds.length} zadań użytkownika ${user.toString()}`, __filename);
+                // wysyła zadania (embedy) do wątku użytkownika
+                Watek.wyslijWiadomosci(client, user, embeds, true, async (response) => {
+                    if (interaction != null)
+                        await interaction.editReply({ content: response, ephemeral: true });
                 });
-                // usunięcie wiadomości (bota - użytkownika pozostaną na górze) z wątku użytkownika przed wysłaniem nowych
-                Watek.usunWiadomosci(client, user, async () => {
-                    //NOTE - Logger done
-                    Logger.log(client, `Wczytano ${embeds.length} zadań użytkownika ${user.toString()}`, __filename);
-                    // wysyła zadania (embedy) do wątku użytkownika
-                    Watek.wyslijWiadomosci(client, user, embeds, true, async (response) => {
-                        if (interaction != null)
-                            await interaction.editReply({ content: response, ephemeral: true });
-                    });
+            });
+            
+        } else {
+            
+            // usunięcie wiadomości (bota - użytkika pozostaną na górze) z wątku użytkownika przed wysłaniem nowych
+            Watek.usunWiadomosci(client, user, async () => {
+                //NOTE - Logger done
+                Logger.log(client, `Brak zadań dla użytkownika ${user.id}`, __filename);
+                // wysyła wiadomość o braku zadań
+                Watek.wyslijWiadomosci(client, user, noTasksMessage, false, async (response) => {
+                    if (interaction != null)
+                        await interaction?.editReply({ content: response, ephemeral: true });
                 });
-            } else {
-                // usunięcie wiadomości (bota - użytkika pozostaną na górze) z wątku użytkownika przed wysłaniem nowych
-                Watek.usunWiadomosci(client, user, async () => {
-                    //NOTE - Logger done
-                    Logger.log(`Brak zadań dla użytkownika ${user.id}`, __filename);
-                    // wysyła wiadomość o braku zadań
-                    Watek.wyslijWiadomosci(client, user, noTasksMessage, false, async (response) => {
-                        if (interaction != null)
-                            await interaction.editReply({ content: response, ephemeral: true });
-                    });
-                });
-            }
-        });
-        //NOTE - Logger done
-        Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla użytkownika ${user.toString()}`, __filename);
+            });
+        }
     });
+    //NOTE - Logger done
+    Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla użytkownika ${user.toString()}`, __filename);
 }
 
 // wyswietla zadania wszystkich użytkowników - potrzebne do automatycznego odświeżania co dany interwał
-// dokończyć !!!
+//TODO -  dokończyć !!!
 async function wyswietlWszystkie(client) {
     //NOTE - Logger done
     Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla wszystkich użytkowników`, __filename);
+
+    // zapytanie o użytkowników
+        Uzytkownik.pobierzWszystkich(client, null, async (result) => {
+            try {
+                if (result){
+                    result.forEach(async element => {
+                        await wyswietl(null, client, 1, element.uzytkownikId);
+                    });
+                };
+            } catch (error) {
+                //NOTE - Logger done
+                Logger.log(client, `Błąd wyświetlania zadań wszystkich użytkowników - ${error}`, __filename, "Error");
+            }
+        });
 
 }
 

@@ -42,15 +42,18 @@ async function pobierz(client, user, cb) {
     // zapytanie do bazy danych o id wątku użytkownika
     const query = `SELECT watekId FROM StyxxxDcBot.Uzytkownicy WHERE uzytkownikId = ${user.id};`;
     DataBase.polacz(query, client, async (result, client) => {
-        let userThreadId = result[0].watekId;
+        let userThreadId = result[0]?.watekId;
         // pobiera wątek należący do użytkownika
         const thread = parentChannel.threads.cache.find(thread => thread.id === userThreadId);
+        if (thread == null || thread == undefined)
+            return null;
         //NOTE - Logger done
-        Logger.log(client, `Pobrano wątek ${thread.toString()} dla użytkownika ${user.id}`, __filename);
+        Logger.log(client, `Pobrano wątek ${thread?.toString()} dla użytkownika ${user.id}`, __filename);
         cb(thread);
         return thread;
     });
 }
+
 
 // usuwanie osoby z wątku właściciela
 async function usunOsobeZWatku(client, user, cb) {

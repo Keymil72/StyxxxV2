@@ -3,6 +3,8 @@ const Logger = require('../Logger.js');
 const Watek = require('./Watek.js');
 const { guildId } = require('../../config.json');
 
+
+//FIXME - zmienić na UzytkownikObj
 //klasa użytkownika
 class Uzytkownik {
     constructor(id, nazwa, avatarUrl, watekId) {
@@ -105,7 +107,7 @@ async function dodajZCache(client, interaction) {
 }
 //pobiera użytkowników z bazy danych
 async function pobierzWszystkich(client, interaction, cb) {
-    DataBase.polacz(`SELECT * FROM StyxxxDcBot.Uzytkownicy`, interaction, (result, interaction) => {
+    DataBase.polacz(`SELECT * FROM StyxxxDcBot.Uzytkownicy`, client, (result, client) => {
         //NOTE - Logger done
         Logger.log(client, `Pobrano użytkowników z bazy danych - ${Object.keys(result).length} objektów`, __filename);
         //po pobraniu danych z bazy danych, przekazuje je do callbacka
@@ -114,4 +116,4 @@ async function pobierzWszystkich(client, interaction, cb) {
 };
 
 //exportuje funkcje
-module.exports = { dodaj, dodajZCache, pobierzWszystkich };
+module.exports = { Uzytkownik, dodaj, dodajZCache, pobierzWszystkich };
