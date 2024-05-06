@@ -204,7 +204,6 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
 }
 
 // wyswietla zadania wszystkich użytkowników - potrzebne do automatycznego odświeżania co dany interwał
-//TODO -  dokończyć !!!
 async function wyswietlWszystkie(client) {
     //NOTE - Logger done
     Logger.log(client, `Przeszukuję STYXXX w poszukiwaniu zadań dla wszystkich użytkowników`, __filename);

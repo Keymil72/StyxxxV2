@@ -13,7 +13,6 @@ const noChannelLogWords = ['Content', 'dev', 'zadanie', 'hidden', 'permission', 
 // podmienić logger na ten !!!
 async function log(client, message, emitter = "unknown", type = 'log'){
     // tworzy prefix
-    //TODO: przetestować czy działa
     if (client != null){
         // deklaruje stałe do wiadomości logu
         const now = moment().format('YYYY-MM-DD HH:mm:ss');
@@ -24,7 +23,6 @@ async function log(client, message, emitter = "unknown", type = 'log'){
         const channel = await client.channels.cache.find(channel => channel.name === LogChannelName);
         // jeśli wiadomość nie zawiera słów kluczowych, to ją loguj
         if (!noChannelLogWords.some(word => type.includes(word))) await channel.send({ content: message });
-        //TODO - Dokończyć
         // podmiana backslasha na slash
         emitter = emitter != "unknown" ? emitter.slice(emitter.indexOf("src")).replaceAll(String.fromCharCode(92), "/") : "unknown";
         let sqlQuery = `INSERT INTO StyxxxDcBot.Logs (message, emitter, emittedTime, type) VALUES ('${message}', '${emitter}', DATE_ADD(now(),interval 2 hour), '${type}')`;
