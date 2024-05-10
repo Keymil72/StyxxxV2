@@ -157,7 +157,6 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
     // wykonanie zapytania
     DataBase.polacz(query, interaction, async (result, interaction) => {
         client = interaction == null ? client : interaction.client;
-
         let embeds = [];
         // jeśli są jakieś zadania w bazie danych
         if (result.length > 0) {
@@ -170,14 +169,11 @@ async function wyswietl(interaction, client, czyAktywne = 1, userId) {
                 // dodaje embeda do tablicy
                 embeds.push(embed);
             });
-
-            Watek.pobierz(client, user, async (thread) => {
-            });
             
             // usunięcie wiadomości (bota - użytkownika pozostaną na górze) z wątku użytkownika przed wysłaniem nowych
             Watek.usunWiadomosci(client, user, async () => {
                 //NOTE - Logger done
-                Logger.log(client, `Wczytano ${embeds.length} zadań użytkownika ${user.toString()}`, __filename);
+                Logger.log(client, `Wczytano ${embeds.length} zadań użytkownika ${user.id}`, __filename);
                 // wysyła zadania (embedy) do wątku użytkownika
                 Watek.wyslijWiadomosci(client, user, embeds, true, async (response) => {
                     if (interaction != null)

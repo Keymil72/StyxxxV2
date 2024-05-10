@@ -11,17 +11,17 @@ module.exports = {
 	once: true,
 	execute(client) {
 		if (!developmentMode)
-		//NOTE - Logger done
+			//NOTE - Logger done
 			Logger.log(client, `${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`, __filename, 'Start -h');
 		else
-		//NOTE - Logger done
+			//NOTE - Logger done
 			Logger.log(client, `${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`, __filename, 'Start');
-		
+
 		if (!developmentMode)
 			client.user.setPresence({ activities: [{ name: '/pomoc', type: ActivityType.Listening }], status: 'online' });
 		else
 			client.user.setPresence({ activities: [{ name: 'W trakcie budowy /pomoc', type: ActivityType.Custom }], status: 'dnd' });
-		
+
 		console.log(`${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`);
 
 		// uruchomienie SheduledTask

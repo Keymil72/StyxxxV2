@@ -98,7 +98,6 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
             }else {
                 // pobiera webhuka z kanału rodzica do wysyłania wiadomości
                 const webhook = await Webhook.pobierz(parentChannel);
-                // 
                 if (webhook == null){
                     //NOTE - Logger done
                     Logger.log(client, `Nie znaleziono webhuka w kanale ${parentChannel.toString()}`, __filename, 'Error');

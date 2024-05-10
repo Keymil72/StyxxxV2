@@ -29,7 +29,8 @@ async function log(client, message, emitter = "unknown", type = 'log'){
         DataBase.polacz(sqlQuery, client, (result, client) => {
             //REVIEW - Sprawdzić czy działa
             if (client == null || client == undefined) {
-                console.log(`Błąd Loggera przy dodawaniu logu do bazy danych!!!`, `${__filename.slice(__filename.toString().indexOf("src"))}`, 'error');
+                console.log(`Błąd Loggera przy dodawaniu logu do bazy danych (brak clienta lub osiągnięto zbyt dużą ilość zapytań)!!!`, `${__filename.slice(__filename.toString().indexOf("src"))}`, 'error');
+                console.log(`Błąd: ${client}, ${message} - ${emitter}, ${type}`);
             }
         });
     }else if (!noChannelLogWords.some(word => type.includes(word))) {
