@@ -44,9 +44,10 @@ async function dodaj(interaction) {
     let query = `INSERT INTO StyxxxDcBot.Zadania (nazwa, kolor, termin, opis, link, zdjecie, czyAktywne, fk_uzytkownikId) VALUES ('${zadanie.nazwa}', '${zadanie.kolor}', '${zadanie.termin}', '${zadanie.opis}', '${zadanie.link}', '${zadanie.zdjecie}', '${zadanie.czyAktywne}', '${zadanie.fk_uzytkownikId}')`;
     // wykonanie zapytania
     DataBase.polacz(query, interaction, async (result, interaction) => {
+        const client = interaction.client;
         await interaction.editReply({ content: `Dodano zadanie: "${zadanie.nazwa}" do twojej listy w wątku kanału "todo"`, ephemeral: true });
         //NOTE - Logger done
-        Logger.log(interaction.client, `${interaction.user.id} wrzucił do STYXXX'u nowe zadanie ${zadanie.id}`, __filename);
+        Logger.log(client, `${interaction.user.id} wrzucił do STYXXXu nowe zadanie ${zadanie.id}`, __filename);
         wyswietl(interaction);
     });
 
@@ -67,7 +68,7 @@ async function usun(interaction) {
             // informacje o wyłączeniu zadania i wyświetlenie zaktualizowanej listy zadań
             await interaction.editReply({ content: `Wyłączyłeś zadanie o id: ${id}`, ephemeral: true });
             //NOTE - Logger done
-            Logger.log(interaction.client, `Wyłączono zadanie ${id} ze STYXXX'u przez ${user.toString()}`, __filename);
+            Logger.log(interaction.client, `Wyłączono zadanie ${id} ze STYXXXu przez ${user.toString()}`, __filename);
             wyswietl(interaction);
         } else {
             // informacja o braku zadania o podanym id należącego do użytkownika
@@ -300,6 +301,7 @@ async function wlaczZadanie(interaction) {
 }
 
 async function parametryZadania(interaction) {
+    const zdjecie = await Zdjecie.sprawdz(interaction.options.getString('zdjecie'));
     // pobranie parametrów z interakcji i utworzenie obiektu zadania z wartościami null w przypadku braku parametru
     let zadanie = new ZadanieObj(
         interaction.options.getInteger('id'),
@@ -308,11 +310,11 @@ async function parametryZadania(interaction) {
         interaction.options.getString('termin'),
         interaction.options.getString('opis'),
         Link.sprawdz(interaction.options.getString('link')),
-        Zdjecie.sprawdz(interaction.options.getString('zdjecie')),
+        zdjecie,
         interaction.options.getInteger('czy-aktywne') == null ? 1 : interaction.options.getInteger('czy-aktywne'),
         interaction.user.id
     );
-
+    console.log(zadanie.zdjecie);
     // zwraca objekt zadanie
     return zadanie;
 }
