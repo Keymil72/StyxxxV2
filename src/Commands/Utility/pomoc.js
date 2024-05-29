@@ -29,7 +29,7 @@ module.exports = {
             .setDescription('Komendy dostępne tylko dla Apollo (funkcja Styxxx)')
             .setColor('#00ff00')
             .addFields(
-                { name: 'Panel kontrolny dostępny na ', value: `:house:${interaction.guild.channels.cache.get(allowedChannelId).toString()}`},
+                { name: 'Panel kontrolny dostępny na ', value: `:house:${interaction.guild.channels.cache.get(allowedChannelId).toString()}` },
                 { name: '/historia-kolejki', value: 'Wyświetla historię kolejki odtwarzania (aktualna sesja)' },
                 { name: '/panel', value: 'Ustawia panel kontrolny Apollo na wybranym kanale (potrzebne uprawnienia)' },
                 { name: '/play', value: 'Wstawia utwór do kolejki odtwarzania przyjmowane wartości - nazwa / link / link do playlisty (youtube, spotify narazie nie działa)' },
@@ -56,9 +56,9 @@ module.exports = {
                 { name: '/ping', value: 'Wyświetla informację o połączeniu - głównie do testów' },
                 { name: '/role-setup <nazwa roli> <emoji> <opis>', value: 'Ustawia role na serwerze przypiwsując je do reakcji na wiadomości na kanale -  #role' },
                 { name: '/wyslij <tekst>', value: 'Wysyła podany tekst za pośrednictwem bota (można też oznaczać osoby kanał itp.)' },
-                { name: '/zadanie dodaj <nazwa zadania> <data> <kolor z listy> <opis> <link po kilknięciu w nazwę> <link do zdjęcia w wiadomośći>', value: 'Dodaje zadanie do listy rzeczy do zrobienia (czas jest zapisana jako dowony tekst) link i zdjęcie jest weryfikowane, gdy nie poprawny to brak' },
+                { name: '/zadanie dodaj <nazwa zadania> <data> <kolor z listy> <opis> <link po kilknięciu w nazwę> <link do zdjęcia w wiadomośći>', value: 'Dodaje zadanie do listy rzeczy do zrobienia ("\n" w opisie tworzy nową linię) (czas jest zapisana jako dowony tekst) link i zdjęcie jest weryfikowane, gdy nie poprawny to brak' },
                 { name: '/zadanie kanal', value: 'Tworzy kanał z listą twoich zadać (komenda głównie do wykrywania błędów)' },
-                { name: '/zadanie edytuj <id> <nazwa zadania> <data> <kolor z listy> <opis> <link po kilknięciu w nazwę> <link do zdjęcia w wiadomośći>', value: 'Edytuje zadanie o podanym id (czas jest zapisana jako dowony tekst) link i zdjęcie jest weryfikowane, gdy nie poprawny to brak (nie trzeba podawać wszystki wartości. Można zmienić np. tylko 1 recza zostanie taka sama)' },
+                { name: '/zadanie edytuj <id> <nazwa zadania> <data> <kolor z listy> <opis> <link po kilknięciu w nazwę> <link do zdjęcia w wiadomośći>', value: 'Edytuje zadanie o podanym id ("\n" w opisie tworzy nową linię) (czas jest zapisana jako dowony tekst) link i zdjęcie jest weryfikowane, gdy nie poprawny to brak (nie trzeba podawać wszystki wartości. Można zmienić np. tylko 1 recza zostanie taka sama)' },
                 { name: '/zadanie wyswietl', value: 'Wyświetla listę zadań do zrobienia' },
                 { name: '/zadanie usun <id>', value: 'Usuwa zadanie o podanym id' },
                 { name: '/wstawaj <oznaczona osoba> <ilość powtórzeń>', value: 'Rzuca podaną osobę po kanałach (ilość powtórzeń < 1 wtedy rzuca w "nieskończoność")' }
@@ -72,6 +72,6 @@ module.exports = {
         // stworzenie logów
         const commandData = "``` " + interaction.commandName + " ```";
         //NOTE - Logger done
-        Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${chString}`,  __filename);
+        Logger.log(interaction.client, `Użytkownik ${member.toString()} wykonał polecenie ${commandData} na kanale ${chString}`, __filename);
     },
 };
