@@ -1,3 +1,4 @@
+// FIXME dokończyć
 const { SlashCommandBuilder } = require("discord.js");
 
 const Logger = require('../../Features/Logger.js');
@@ -9,7 +10,7 @@ module.exports = {
         .addSubcommand(subcommand => subcommand
             .setName('usun-osobe')
             .setDescription('Usuwa osobę z twojego wątku'))
-        .addMemberOption(option => option
+        .addUserOption(option => option
             .setName('osoba')
             .setDescription('Osoba do usunięcia')
             .setRequired(true))
