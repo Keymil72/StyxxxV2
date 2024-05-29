@@ -27,7 +27,6 @@ async function log(client, message, emitter = "unknown", type = 'log'){
         emitter = emitter != "unknown" ? emitter.slice(emitter.indexOf("src")).replaceAll(String.fromCharCode(92), "/") : "unknown";
         let sqlQuery = `INSERT INTO StyxxxDcBot.Logs (message, emitter, emittedTime, type) VALUES ('${message}', '${emitter}', DATE_ADD(now(),interval 2 hour), '${type}')`;
         DataBase.polacz(sqlQuery, client, (result, client) => {
-            //REVIEW - Sprawdzić czy działa
             if (client == null || client == undefined) {
                 console.log(`Błąd Loggera przy dodawaniu logu do bazy danych (brak clienta lub osiągnięto zbyt dużą ilość zapytań)!!!`, `${__filename.slice(__filename.toString().indexOf("src"))}`, 'error');
                 console.log(`Błąd: ${client}, ${message} - ${emitter}, ${type}`);

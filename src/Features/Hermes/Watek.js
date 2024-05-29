@@ -56,11 +56,33 @@ async function pobierz(client, user, cb) {
 
 
 // usuwanie osoby z wątku właściciela
-async function usunOsobeZWatku(client, user, cb) {
+async function usunOsobeZWatku(interaction, client, user, target, cb) {
+    if ((interaction == null || interaction == undefined) && (client == null || client == undefined)) return;
+    if (user == null || user == undefined) return;
+    if ((interaction == null || interaction == undefined) && (channel == null || channel == undefined)) return;
+    if ((client == null || client == undefined) && interaction?.client != null) client = interaction.client;
+    if (target == null || target == undefined) return;
+    pobierz(client, user, async (thread) => {
+        try {
+            if (thread != null || thread != undefined) {
+                await thread?.members?.remove(target?.id);
+                //NOTE - Logger done
+                Logger.log(client, `Usunięto użytkownika ${target?.id} z wątku ${thread?.toString()} przez użytkownika ${user?.id}`, __filename);
+                cb(`Usunięto użytkownika ${target?.id} z twojego wątku ${thread?.toString()}`);
+            }else{
+                //NOTE - Logger done
+                Logger.log(client, `Nie znaleziono wątku dla użytkownika ${user?.id}`, __filename, 'error');
+                cb(`Nie znaleziono wątku dla użytkownika ${user?.id}`);
+            }
+        } catch (error) {
+            //NOTE - Logger done
+            Logger.log(client, `Błąd przy usuwaniu użytkownika ${user?.id} z wątku ${thread?.toString()}`, __filename, 'error');
+            cb(`Błąd przy usuwaniu użytkownika ${user?.id} z twojego wątku zgłoś się do administratora z dalszym errorem!!! - ${error}`);
+        }
+    });
+}
 
-};
-
-async function usunWiadomosci(client, user, cb){
+async function usunWiadomosci(client, user, cb) {
     const parentChannel = client.channels.cache.get(channelTodoId);
     await pobierz(client, user, async (thread) => {
         await thread.messages.fetch().then(async messages => {
@@ -88,17 +110,17 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
         let query = `SELECT * FROM StyxxxDcBot.Uzytkownicy WHERE uzytkownikId = ${user.id};`;
         DataBase.polacz(query, client, async (result, client) => {
             // jeżeli result.length == 0 to użytkownik nie istnieje w bazie danych
-            if (!result.length){
+            if (!result.length) {
                 // wysyła wiadomość o braku zadań z callbackiem i loggerem
                 //NOTE - Logger done
                 Logger.log(client, `Użytkownik ${user.id} nie ma wątku z zadaniami`, __filename, 'info');
                 // wysyła wiadomość o braku wątku z zadaniami
                 cb(`Wyjdź z kanału discord i wejdź ponownie na dowolny kanał disscorda "TakiSobieDc", aby twoje dane wpłynęły do Styxxx'u.`);
-            // w przeciwnym razie użytkownik istnieje i powinien istnieć wątek
-            }else {
+                // w przeciwnym razie użytkownik istnieje i powinien istnieć wątek
+            } else {
                 // pobiera webhuka z kanału rodzica do wysyłania wiadomości
                 const webhook = await Webhook.pobierz(parentChannel);
-                if (webhook == null){
+                if (webhook == null) {
                     //NOTE - Logger done
                     Logger.log(client, `Nie znaleziono webhuka w kanale ${parentChannel.toString()}`, __filename, 'Error');
                     // wysyła wiadomość o braku webhuka w kanale z callbackiem
@@ -108,33 +130,33 @@ async function wyslijWiadomosci(client, user, msgs, isEmbed = false, cb) {
 
                 //NOTE - Logger done
                 Logger.log(client, `Odnaleziono wątek ${thread.toString()} dla użytkownika ${user.id}`, __filename);
-                if (msgs == noTasksMessage){
+                if (msgs == noTasksMessage) {
                     // wysyła wiadomość o braku zadań
-                    await webhook.send({ content: noTasksMessage, threadId: thread.id});
+                    await webhook.send({ content: noTasksMessage, threadId: thread.id });
                     //NOTE - Logger done
                     Logger.log(client, `Wysłano wiadomość o braku zadań do wątku ${thread.toString()} dla użytkownika ${user.id}`, __filename);
                     // wysyła wiadomość o braku zadań z callbackiem
                     cb(noTasksMessage);
                     return;
-                }else{
-                    try{
+                } else {
+                    try {
                         // sprawdzić czy nie ma błędu przy pojedynczym zadaniu jak tak to wrócićdo poprzedniej wersji
                         // wysyła wiadomości do wątku
                         msgs.forEach(async msg => {
                             // wysyła pojedynczą wiadomość do wątku
-                            let sended = await webhook.send({ embeds: [msg], threadId: thread.id});
+                            let sended = await webhook.send({ embeds: [msg], threadId: thread.id });
                             await sended.react('✅');
                             await sended.react('❌');
                         });
                     }
-                    catch (error){
-                        let sended = await webhook.send({ content: msgs, threadId: thread.id});
+                    catch (error) {
+                        let sended = await webhook.send({ content: msgs, threadId: thread.id });
                         await sended.react('✅');
                         await sended.react('❌');
                     }
-                    if (isEmbed){
+                    if (isEmbed) {
                         // wysyła wiadomość o dostarczeniu wszystkich zadań
-                        await webhook.send({ content: 'Hermes dostarczył zadania @everyone', threadId: thread.id});
+                        await webhook.send({ content: 'Hermes dostarczył zadania @everyone', threadId: thread.id });
                     }
                     // sprawdzić czy nie ma błędu z msgs - wyświetla undefined / object Object
                     //NOTE - Logger done
