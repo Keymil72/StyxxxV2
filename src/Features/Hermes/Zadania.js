@@ -314,7 +314,6 @@ async function parametryZadania(interaction) {
         interaction.options.getInteger('czy-aktywne') == null ? 1 : interaction.options.getInteger('czy-aktywne'),
         interaction.user.id
     );
-    console.log(zadanie.zdjecie);
     // zwraca objekt zadanie
     return zadanie;
 }
