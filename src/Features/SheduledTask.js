@@ -10,9 +10,9 @@ function start(client){
         Logger.log(client, 'Wywołano funkcję wyswietlWszystkie', __filename);
         Zadania.wyswietlWszystkie(client,);
     });
-    cron.schedule('* * 20 * *', () => {
+    cron.schedule('0 * 20 * * *', () => {
         Logger.log(client, 'Wywołano funkcję rudyPrzypomnienie', __filename);
-        const user = client.users.cache.get(680441577403187231);
+        const user = client.users.cache.get("680441577403187231");
         user.send('Ruda kurwo votuj!');
       });
 }

@@ -14,6 +14,6 @@ module.exports = {
         // wyświetlenie aktualnego pingu bota
         await interaction.reply({ content: `STYXXX dopłynął z opóźnieniem ${ms}ms.`, ephemeral: true });
         //NOTE - Logger done
-        Logger.log(client, `Sprawdzono opóźnienie Styxxx'u - ${ms}ms`, __filename);
+        Logger.log(client, `Sprawdzono opóźnienie Styxxxu - ${ms}ms`, __filename);
     },
 };
