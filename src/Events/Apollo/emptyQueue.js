@@ -4,5 +4,5 @@ module.exports = (queue) => {
     .setAuthor({ name: `Brak utworów w kolejce!`})
     .setColor('#2f3136');
     
-    queue.metadata.send({ embeds: [emptyQueue] });
+    queue.metadata.channel.send({ embeds: [emptyQueue] });
 }

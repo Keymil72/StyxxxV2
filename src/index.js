@@ -86,7 +86,6 @@ client.on(Events.InteractionCreate, async interaction => {
 
 
 const player = new Player(client);
-global.genius = new Genius.Client();
 player.extractors.loadDefault();
 
 require("./Features/Loader.js");

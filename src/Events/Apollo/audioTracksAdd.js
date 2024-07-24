@@ -5,5 +5,5 @@ module.exports = (queue) => {
     .setAuthor({ name: `Dodano wszystkie utwory z playlisty do kolejki`, })
     .setColor('#2f3136')
     
-    queue.metadata.send({ embeds: [audioTracksAdd] });
+    queue.metadata.channel.send({ embeds: [audioTracksAdd] });
 }

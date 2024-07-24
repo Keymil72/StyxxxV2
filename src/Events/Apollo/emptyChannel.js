@@ -4,5 +4,5 @@ module.exports = (queue) => {
     .setAuthor({ name: `Kanał jest pusty - rozłączam z kanału`})
     .setColor('#2f3136');
     
-    queue.metadata.send({ embeds: [emptyChannel] });
+    queue.metadata.channel.send({ embeds: [emptyChannel] });
 }

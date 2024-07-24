@@ -25,7 +25,6 @@ module.exports = {
 
             // wyszukanie utworu
             const res = await player.search(song, {
-                requestedBy: interaction.member,
                 searchEngine: QueryType.AUTO
             });
 
@@ -34,7 +33,9 @@ module.exports = {
 
             // stworzenie kolejki
             const queue = player.nodes.create(interaction.guild, {
-                metadata: interaction.channel,
+                metadata: {
+                    channel: interaction.channel
+                           },
                 spotifyBridge: spotifyBridge,
                 volume: volume,
                 leaveOnEnd: leaveOnEnd,

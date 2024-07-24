@@ -4,5 +4,5 @@ module.exports = (queue, track) => {
     .setAuthor({ name: `Pomijam utwór "${track.title}"`, iconURL: track.thumbnail })
     .setColor('#EE4B2B');
     
-    queue.metadata.send({ embeds: [playerSkip] });
+    queue.metadata.channel.send({ embeds: [playerSkip] });
 }

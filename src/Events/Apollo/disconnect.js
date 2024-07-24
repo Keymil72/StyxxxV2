@@ -5,5 +5,5 @@ module.exports = (queue) => {
     .setAuthor({ name: `Wyjście z kanału - czyszczenie kolejki`})
     .setColor('#2f3136');
 
-    queue.metadata.send({ embeds: [Disconnect]});
+    queue.metadata.channel.send({ embeds: [Disconnect]});
 }

@@ -14,9 +14,10 @@ module.exports = {
             const buttonName = customId.ffb;
             const queue = useQueue(interaction.guild);
             if (buttonName) {
+                const client = interaction.client;
                 delete require.cache[require.resolve(`../../Buttons/${buttonName}.js`)];
                 const button = require(`../../Buttons/${buttonName}.js`);
-                if (button) return button({ interaction, queue });
+                if (button) return button({ client, interaction, queue });
             }
         }
     },

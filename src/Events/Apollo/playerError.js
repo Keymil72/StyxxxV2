@@ -5,7 +5,7 @@ module.exports = (queue, error) => {
     .setAuthor({ name: `Odtwarzacz napotkał nieobsługiwany błąd! - sprawdz logi/konsole`})
     .setColor('#EE4B2B');
     
-    queue.metadata.send({ embeds: [PlayerErrorEmbed] });
+    queue.metadata.channel.send({ embeds: [PlayerErrorEmbed] });
 
     console.log(`Odtwarzacz napotkał error: ${error.message}`);
 }

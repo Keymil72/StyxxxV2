@@ -4,7 +4,7 @@ module.exports = (queue, error) => {
     .setAuthor({ name: `Nieobsługiwany błąd - sprawdz logi/konsole`})
     .setColor('#EE4B2B');
     
-    queue.metadata.send({ embeds: [ErrorEmbed] });
+    queue.metadata.channel.send({ embeds: [ErrorEmbed] });
 
     console.log(`Error bota: ${error.message}`);
 }

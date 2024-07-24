@@ -18,12 +18,12 @@ module.exports = async ({ interaction, queue }) => {
     
     // stworzenie embeda z informacjami aktualnie odtwarzanego utworu
     const embed = new EmbedBuilder()
-    .setAuthor({ name: `${track.author} - ${track.title}`,  iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true })})
-    .setThumbnail(track.thumbnail)
-    .setDescription(`Głośność **${queue.node.volume}**%\nDługość **${trackDuration}**\nPostęp ${progress}\nTryb zapętlania **${methods[queue.repeatMode]}**\nWstawione przez ${track.requestedBy}`)
-    .setFooter({ text: 'Funkcja Apollo -> Styxxx Bot', iconURL: interaction.member.avatarURL({ dynamic: true })})
-    .setColor('ff0000')
-    .setTimestamp()
+        .setAuthor({ name: `${track.author} - ${track.title}`,  iconURL: client.user.displayAvatarURL({ size: 1024, dynamic: true })})
+        .setThumbnail(track.thumbnail)
+        .setDescription(`Głośność **${queue.node.volume}**%\nDługość **${trackDuration}**\nPostęp ${progress}\nTryb zapętlania **${methods[queue.repeatMode]}**\nWstawione przez ${track.requestedBy}`)
+        .setFooter({ text: 'Funkcja Apollo -> Styxxx Bot', iconURL: interaction.member.avatarURL({ dynamic: true })})
+        .setColor('ff0000')
+        .setTimestamp()
     // edycja embeda na kanale
     await interaction.editReply({ embeds: [embed], ephemeral: true });
 }
