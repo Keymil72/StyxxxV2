@@ -105,12 +105,16 @@ module.exports = {
                 break;
             }
             // przeniesienie osoby po kanałach
-            if (target?.voice?.channel != null)
+            try {
                 await target.voice.setChannel(ch1);
-            await wait(500);
-            if (target?.voice?.channel != null)
+                await wait(500);
                 await target.voice.setChannel(ch2);
-            await wait(500);
+                await wait(500);
+            }
+            catch(e){
+                await interaction.editReply({ content: `Podana osoba się zatopiła w Styxxx'ie!`, ephemeral: true });
+                break;
+            }
         }
     },
 
