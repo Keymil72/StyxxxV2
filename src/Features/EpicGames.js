@@ -4,6 +4,7 @@ const fs = require('fs');
 const { EmbedBuilder } = require('discord.js');
 const path = require('path');
 const Logger = require('./Logger.js');
+const Link = require('./Hermes/Link.js');
 
 // funkcja wyświetlająca darmowe gry na kanale
 function display(client) {
@@ -24,6 +25,7 @@ function display(client) {
             // jeśli tytuł nie znajduje się w ostatnich wysłanych tytułach to wysyła wiadomość na kanał
             if (!lastSend.includes(title)) {
                 let url = "https://www.epicgames.com/store/pl/p/" + title.replaceAll(" ", "-").toLowerCase();
+                url = Link.sprawdz(url);
                 let image = game.keyImages[0].url;
                 let date = moment.utc(game.effectiveDate).format('DD.MM.YYYY HH:mm');
                 let currentDate = moment.utc().format('DD.MM.YYYY HH:mm');

@@ -1,7 +1,7 @@
 // moduł eksportuje przycisk wznowienia lub zatrzymania odtwarzania utworu
 module.exports = async ({ interaction, queue }) => {
     // sprawdzenie czy odtwarzam utwór
-    if (!queue?.isPlaying()) return interaction.editReply({ content: `No music currently playing... try again ? ❌`, ephemeral: true });
+    if (!queue?.isPlaying()) return interaction.editReply({ content: `Nie odtwarzam aktualnie utworu ❌`, ephemeral: true });
 
     // wznowienie odtwarzania utworu
     const resumed = queue.node.resume();

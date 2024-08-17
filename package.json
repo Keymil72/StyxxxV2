@@ -11,7 +11,6 @@
   "dependencies": {
     "@discord-player/extractor": "^4.3.1",
     "@discordjs/opus": "^0.9.0",
-    "@distube/ytdl-core": "^4.13.5",
     "@evan/opus": "^1.0.3",
     "discord-player": "6.6.9-dev.1",
     "discord.js": "^14.14.1",
@@ -26,6 +25,7 @@
     "node-cron": "^3.0.3",
     "node-opus": "^0.3.3",
     "path": "^0.12.7",
-    "play-dl": "^1.9.7"
+    "yt-stream": "^1.7.2",
+    "ytdl-core": "^4.11.5"
   }
 }
