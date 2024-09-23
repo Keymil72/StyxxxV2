@@ -26,7 +26,7 @@ function display(client) {
             if (!lastSend.includes(title)) {
                 let url = "https://www.epicgames.com/store/pl/p/" + title.replaceAll(" ", "-").toLowerCase();
                 url = Link.sprawdz(url);
-                let image = game.keyImages[0].url;
+                let image = Link.sprawdz(game.keyImages[0].url.replaceAll(" ", "-").toLowerCase());
                 let date = moment.utc(game.effectiveDate).format('DD.MM.YYYY HH:mm');
                 let currentDate = moment.utc().format('DD.MM.YYYY HH:mm');
                 let description = game.description;
