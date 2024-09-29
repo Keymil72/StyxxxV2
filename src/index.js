@@ -1,6 +1,7 @@
 const { Player } = require('discord-player');
 const Genius = require("genius-lyrics");
 const { Client, Collection, Events, GatewayIntentBits, Partials } = require('discord.js');
+const { YoutubeiExtractor } = require("discord-player-youtubei");
 
 const fs = require('node:fs');
 const path = require('node:path');
@@ -86,7 +87,7 @@ client.on(Events.InteractionCreate, async interaction => {
 
 
 const player = new Player(client);
-player.extractors.loadDefault();
+player.extractors.register(YoutubeiExtractor, {client});
 
 require("./Features/Loader.js");
 //logowanie bota
