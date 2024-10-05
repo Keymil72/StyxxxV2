@@ -10,13 +10,15 @@ module.exports = {
 	name: Events.ClientReady,
 	once: true,
 	execute(client) {
-		if (!developmentMode)
+		if (!developmentMode){
 			//NOTE - Logger done
 			Logger.log(client, `${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`, __filename, 'Start -h');
-		else
+		}
+		else{
 			//NOTE - Logger done
 			Logger.log(client, `${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`, __filename, 'Start');
-
+			Logger.log(client, `${client.user.tag} odpalony w trybie budowy! Czy jesteś tego pewien? Jeśli chcesz zmienić status użyj polecenia "/trybBudowy <tak/nie> na dc."`, __filename, 'Start');
+		}
 		if (!developmentMode)
 			client.user.setPresence({ activities: [{ name: '/pomoc', type: ActivityType.Listening }], status: 'online' });
 		else
@@ -29,7 +31,8 @@ module.exports = {
 
 		// wyświetla darmowe gry na kanale co godzinę
 		setInterval(() => {
-			EpicGames.display(client);
+			if (!developmentMode)
+				EpicGames.display(client);
 		}, 1000 * 60 * 60);
 	},
 };
