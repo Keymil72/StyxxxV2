@@ -2,7 +2,7 @@
     "allowedChannelId": "1107770206270529556",
     "maxVol": 100,
     "spotifyBridge": true,
-    "volume": 7,
+    "volume": 17,
     "leaveOnEmpty": true,
     "leaveOnEmptyCooldown": 30000,
     "leaveOnEnd": true,
