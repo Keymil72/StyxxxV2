@@ -22,7 +22,7 @@ module.exports = {
 		if (!developmentMode)
 			client.user.setPresence({ activities: [{ name: '/pomoc', type: ActivityType.Listening }], status: 'online' });
 		else
-			client.user.setPresence({ activities: [{ name: 'W trakcie budowy /pomoc', type: ActivityType.Custom }], status: 'dnd' });
+			client.user.setPresence({ activities: [{ name: 'W trakcie budowy /pomoc', type: ActivityType.Listening }], status: 'dnd' });
 
 		console.log(`${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`);
 

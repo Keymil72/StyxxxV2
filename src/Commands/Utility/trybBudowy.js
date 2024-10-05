@@ -20,24 +20,19 @@ module.exports = {
         // deklaracja stałych
         const client = interaction.client;
         const mode = interaction.options.getBoolean('mode');
-        if (mode == null){
-            let message = `Tryb budowy Styxxxu jest ustawiony na ${developmentMode}`;
-            await interaction.reply({ content: message, ephemeral: true });
-            //NOTE - Logger done
-            Logger.log(client, `Sprawdzono aktualny tryb budowy Styxxxu`, __filename);
-            return;
-        }
-
         if (developmentMode == mode){
             let message = `Tryb budowy Styxxxu jest już ustawiony na ${mode}`;
             //NOTE - Logger done
             Logger.log(client, `Próbowano zmienić aktualny tryb budowy Styxxxu na ten sam`, __filename, 'Critical');
             await interaction.reply({ content: message, ephemeral: true });
         }else{
+            let name = mode ? '/pomoc' : 'W trakcie budowy /pomoc';
+            let status = mode ? 'online' : 'dnd';
             let message = `Tryb budowy Styxxxu został zmieniony na ${mode}`;
             jsonData.developmentMode = mode;
             fs.writeFileSync('../../config.json', JSON.stringify(jsonData, null, 2));
             await interaction.reply({ content: message, ephemeral: true });
+            client.user.setPresence({ activities: [{ name: name, type: ActivityType.Listening }], status: status });
             //NOTE - Logger done
             Logger.log(client, `Sprawdzono zmieniono tryb budowy z ${developmentMode} na ${mode}`, __filename, 'Critical');
         }
