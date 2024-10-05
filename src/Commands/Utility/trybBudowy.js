@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 
 const Logger = require('../../Features/Logger.js');
 const fs = require('fs');
@@ -7,18 +7,12 @@ const { developmentMode } = require('../../config.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('trybBudowy')
+        .setName('tryb-budowy')
         .setDescription('Zmiana trybu bota')
         .addBooleanOption(option => option
             .setName('mode')
             .setDescription('Czy bot ma być w trybie budowy?')
-            .addChoices(
-                { name: 'tak', value: true },
-                { name: 'nie', value: false },
-                { name: 'wyswietl', value: null },
-            )
             .setRequired(true)
-            
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator),
 

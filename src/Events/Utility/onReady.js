@@ -17,7 +17,7 @@ module.exports = {
 		else{
 			//NOTE - Logger done
 			Logger.log(client, `${client.user.tag} znowu płynie - ${moment().format('DD-MM-YYYY hh:mm:ss')}`, __filename, 'Start');
-			Logger.log(client, `${client.user.tag} odpalony w trybie budowy! Czy jesteś tego pewien? Jeśli chcesz zmienić status użyj polecenia "/trybBudowy <tak/nie> na dc."`, __filename, 'Start');
+			Logger.log(client, `${client.user.tag} odpalony w trybie budowy! Czy jesteś tego pewien? Jeśli chcesz zmienić status użyj polecenia "/tryb-budowy <tak/nie> na dc."`, __filename, 'Start');
 		}
 		if (!developmentMode)
 			client.user.setPresence({ activities: [{ name: '/pomoc', type: ActivityType.Listening }], status: 'online' });
