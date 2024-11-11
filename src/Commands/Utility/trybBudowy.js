@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
+const { SlashCommandBuilder, ActivityType, PermissionFlagsBits } = require("discord.js");
 
 const Logger = require('../../Features/Logger.js');
 const fs = require('fs');
