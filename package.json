@@ -27,6 +27,7 @@
     "node-opus": "^0.3.3",
     "path": "^0.12.7",
     "play-dl": "^1.9.7",
+    "styxxx": "file:",
     "yt-stream": "^1.7.2"
   }
 }
