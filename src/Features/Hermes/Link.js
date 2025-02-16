@@ -7,8 +7,8 @@ function sprawdz(link){
             Logger.log(null, `Link "${link}" jest null'em `, __filename);
             return null;
         }
+        link = encodeURI(link);
         // REVIEW możliwie coś poknociłem z sprawdzeniem linku !!! (chyba new URL(link) powinien być w if'ie)!!!
-        new URL(link);
         if (sprawdzLink(link))
         {
             //NOTE - Logger done
